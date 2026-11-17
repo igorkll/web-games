@@ -96,6 +96,61 @@ const keys = {
     sprint: false
 };
 
+const gears = [3.8, 2.2, 1.4, 1.0, 0.8, 0.68];
+let currentGear;
+let velocity;
+let acceleration;
+let friction;
+let brake;
+let wheelBase;
+let maxSteeringAngle;
+
+function selectGear() {
+    acceleration = 100 / gears[currentGear];
+}
+
+function resetControl() {
+    currentGear = 5;
+
+    velocity = new Three.Vector3();
+    selectGear();
+    friction = 5;
+    brake = 5;
+
+    wheelBase = 2.5;
+    maxSteeringAngle = Three.MathUtils.degToRad(35);
+
+    car.position.set(0, 0.7 / 2, 0);
+}
+
+function updateControl(delta) {
+    // ------------------------------ velocity
+    const forward = keys.w ? 1 : 0;
+    const backward = keys.s ? 1 : 0;
+    if (forward) velocity.z += acceleration * delta;
+    if (backward) velocity.z -= acceleration * delta;
+
+    const currentBrake = keys.up ? brake : 0;
+    velocity.z = Three.MathUtils.damp(
+        velocity.z, 0, friction + currentBrake, delta
+    );
+
+    // ------------------------------ rotation
+    const steering = (keys.a ? 1 : 0) - (keys.d ? 1 : 0);
+    const steeringAngle = steering * maxSteeringAngle;
+    const angularVelocity = velocity.z * Math.tan(steeringAngle) / wheelBase;
+    car.rotation.y += angularVelocity * delta;
+
+    // ------------------------------ movement
+    const movement = new Three.Vector3(0, 0, velocity.z);
+    movement.applyQuaternion(car.quaternion);
+    car.position.addScaledVector(movement, delta);
+
+    // ------------------------------ debug
+    console.log("position", car.position);
+    console.log("velocity", velocity);
+}
+
 document.addEventListener("keydown", (e) => {
     switch (e.code) {
         case "KeyW": keys.w = true; break;
@@ -119,46 +174,3 @@ document.addEventListener("keyup", (e) => {
         case "ShiftLeft": keys.sprint = false; break;
     }
 });
-
-let velocity;
-let acceleration;
-let friction;
-let wheelBase;
-let maxSteeringAngle;
-
-function resetControl() {
-    velocity = new Three.Vector3();
-    acceleration = 100;
-    friction = 5;
-
-    wheelBase = 2.5;
-    maxSteeringAngle = Three.MathUtils.degToRad(35);
-
-    car.position.set(0, 0.7 / 2, 0);
-}
-
-function updateControl(delta) {
-    // ------------------------------ velocity
-    const forward = keys.w ? 1 : 0;
-    const backward = keys.s ? 1 : 0;
-    if (forward) velocity.z += acceleration * delta;
-    if (backward) velocity.z -= acceleration * delta;
-    velocity.z = Three.MathUtils.damp(
-        velocity.z, 0, friction, delta
-    );
-
-    // ------------------------------ rotation
-    const steering = (keys.a ? 1 : 0) - (keys.d ? 1 : 0);
-    const steeringAngle = steering * maxSteeringAngle;
-    const angularVelocity = velocity.z * Math.tan(steeringAngle) / wheelBase;
-    car.rotation.y += angularVelocity * delta;
-
-    // ------------------------------ movement
-    const movement = new Three.Vector3(0, 0, velocity.z);
-    movement.applyQuaternion(car.quaternion);
-    car.position.addScaledVector(movement, delta);
-
-    // ------------------------------ debug
-    console.log("position", car.position);
-    console.log("velocity", velocity);
-}
