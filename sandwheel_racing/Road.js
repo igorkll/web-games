@@ -53,9 +53,12 @@ export function init() {
 }
 
 export function process(delta) {
-    for (let ix = -Consts.TILE_LOADING; ix < Consts.TILE_LOADING; ix++) {
-        for (let iz = -Consts.TILE_LOADING; iz < Consts.TILE_LOADING; iz++) {
+    const cx = Math.floor(Game.car.position.x / Consts.TILE_SIZE)
+    const cz = Math.floor(Game.car.position.z / Consts.TILE_SIZE)
+
+    console.log(cx, cz);
+
+    for (let ix = cx - Consts.TILE_LOADING; ix <= cx + Consts.TILE_LOADING; ix++)
+        for (let iz = cz - Consts.TILE_LOADING; iz <= cz + Consts.TILE_LOADING; iz++)
             createRoadTile(ix, iz);
-        }
-    }
 }

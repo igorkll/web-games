@@ -5,7 +5,7 @@ import * as Consts from './Consts.js';
 
 // --------------------------------- car
 
-const car = new Three.Group();
+export const car = new Three.Group();
 const body = new Three.Mesh(
     new Three.BoxGeometry(2, 0.7, 4),
     new Three.MeshStandardMaterial({ color: 0xff3333 })
