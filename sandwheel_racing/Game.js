@@ -66,9 +66,7 @@ export function render(delta) {
     let speed = car.position.distanceTo(previousPosition ?? car.position) / delta;
     previousPosition = car.position.clone();
     let div = 1 + (speed / Consts.TILE_PROCESS_DIV_PER_SPEED);
-
-    console.log(div, Consts.TILE_PROCESS_PER_TIME / div)
-
+    
     if (roadProcessTimer > Consts.TILE_PROCESS_PER_TIME / div) {
         Road.process(delta);
         roadProcessTimer = 0;
