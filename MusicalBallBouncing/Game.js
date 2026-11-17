@@ -55,8 +55,8 @@ function jump() {
 export function render(delta) {
     current_time += delta;
 
-    Main.camera.position.copy(Consts.CAMERA_POS);
-    Main.camera.lookAt(Consts.CAMERA_LOOK);
+    Main.camera.position.set(Consts.CAMERA_POS.x, Consts.CAMERA_POS.y, Consts.CAMERA_POS.z + Main.additionalCameraOffset);
+    Main.camera.lookAt(new Three.Vector3(Consts.CAMERA_LOOK.x, Consts.CAMERA_LOOK.y, Consts.CAMERA_LOOK.z + Main.additionalCameraOffset));
 
     if (current_running) {
         if (current_height_pos <= Consts.GROUND_Y) {

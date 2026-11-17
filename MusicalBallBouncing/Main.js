@@ -5,6 +5,8 @@ import * as Gui from './Gui.js';
 
 // ------------------------------------- init
 
+export let additionalCameraOffset = 0;
+
 export const clock = new Three.Clock();
 
 export const scene = new Three.Scene()
@@ -47,6 +49,8 @@ function resize() {
     camera.right = Consts.HOR_VIEW_SIZE / 2;
     camera.top = Consts.HOR_VIEW_SIZE / 2 / aspect;
     camera.bottom = -Consts.HOR_VIEW_SIZE / 2 / aspect;
+
+    additionalCameraOffset = camera.bottom + 1.5;
 
     camera.updateProjectionMatrix();
 }
