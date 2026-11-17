@@ -122,18 +122,22 @@ document.addEventListener("keyup", (e) => {
 let velocity;
 let acceleration;
 let friction;
-let turnSpeed;
+let wheelBase;
+let maxSteeringAngle;
 
 function resetControl() {
     velocity = new Three.Vector3();
     acceleration = 100;
     friction = 5;
-    turnSpeed = 0.1;
+
+    wheelBase = 2.5;
+    maxSteeringAngle = Three.MathUtils.degToRad(35);
 
     car.position.set(0, 0, 0);
 }
 
 function updateControl(delta) {
+    // ------------------------------ velocity
     const forward = keys.w ? 1 : 0;
     const backward = keys.s ? 1 : 0;
     if (forward) velocity.z += acceleration * delta;
@@ -142,15 +146,18 @@ function updateControl(delta) {
         velocity.z, 0, friction, delta
     );
 
-    if (keys.a) car.rotation.y += turnSpeed * velocity.z * delta;
-    if (keys.d) car.rotation.y -= turnSpeed * velocity.z * delta;
+    // ------------------------------ rotation
+    const steering = (keys.a ? 1 : 0) - (keys.d ? 1 : 0);
+    const steeringAngle = steering * maxSteeringAngle;
+    const angularVelocity = velocity.z * Math.tan(steeringAngle) / wheelBase;
+    car.rotation.y += angularVelocity * delta;
 
-    // Перемещение относительно направления машины
+    // ------------------------------ movement
     const movement = new Three.Vector3(0, 0, velocity.z);
     movement.applyQuaternion(car.quaternion);
-
     car.position.addScaledVector(movement, delta);
 
+    // ------------------------------ debug
     console.log("position", car.position);
     console.log("velocity", velocity);
 }
