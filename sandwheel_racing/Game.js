@@ -1,6 +1,7 @@
 import * as Three from 'three';
 import * as Main from './Main.js';
 import * as Road from './Road.js';
+import * as Consts from './Consts.js';
 
 // --------------------------------- car
 
@@ -133,7 +134,7 @@ function resetControl() {
     wheelBase = 2.5;
     maxSteeringAngle = Three.MathUtils.degToRad(35);
 
-    car.position.set(0, 0, 0);
+    car.position.set(0, 0.7 / 2, 0);
 }
 
 function updateControl(delta) {
