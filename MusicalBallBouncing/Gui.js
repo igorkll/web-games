@@ -4,15 +4,22 @@ import * as Game from './Game.js';
 
 let _audio;
 
-function startGame(audio) {
+function stopGame() {
     if (_audio) {
-       _audio.pause();
+        _audio.pause();
         _audio.currentTime = 0;
         _audio.removeAttribute('src');
         _audio.load();
 
         if (_audio._blobUrl) URL.revokeObjectURL(_audio._blobUrl);
+        _audio = null;
     }
+
+    Game.stop();
+}
+
+function startGame(audio) {
+    stopGame();
 
     audio.loop = true;
     audio.play();
@@ -28,6 +35,10 @@ export function init() {
         Modals.windowSelectFile("mp3", true).then(mp3data => {
             startGame(Utils.createAudioFromBuffer(mp3data));
         });
+    })
+
+    document.getElementById("test").addEventListener("click", () => {
+        stopGame();
     })
 }
 
