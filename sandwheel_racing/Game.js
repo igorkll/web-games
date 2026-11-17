@@ -17,6 +17,7 @@ const lookOffset = new Three.Vector3(0, 1, 0);
 
 const cameraTarget = new Three.Vector3();
 const lookTarget = new Three.Vector3();
+const lerpLookTarget = new Three.Vector3();
 
 // ---------------------------------
 
@@ -38,7 +39,8 @@ function updateCamera() {
     const currentLookOffset = lookOffset.clone();
     currentLookOffset.applyQuaternion(car.quaternion);
     lookTarget.copy(car.position).add(currentLookOffset);
-    Main.camera.lookAt(lookTarget);
+    lerpLookTarget.lerp(lookTarget, 0.08);
+    Main.camera.lookAt(lerpLookTarget);
 }
 
 export function render() {
