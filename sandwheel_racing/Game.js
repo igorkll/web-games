@@ -15,7 +15,7 @@ const hood = new Three.Mesh(
     new Three.BoxGeometry(1.5, 0.4, 1),
     new Three.MeshStandardMaterial({ color: 0xffff00 })
 );
-hood.position.set(0, 0.5, -1.5);
+hood.position.set(0, 0.5, 1.5);
 car.add(hood);
 
 // --------------------------------- functions
@@ -56,7 +56,7 @@ export function render(delta) {
 
 // --------------------------------- camera
 
-const cameraOffset = new Three.Vector3(0, 4, 8);
+const cameraOffset = new Three.Vector3(0, 4, -8);
 const lookOffset = new Three.Vector3(0, 1, 0);
 
 const cameraTarget = new Three.Vector3();
@@ -131,8 +131,8 @@ function resetControl() {
 function updateControl(delta) {
     const forward = keys.w ? 1 : 0;
     const backward = keys.s ? 1 : 0;
-    if (forward) velocity.z -= acceleration * delta;
-    if (backward) velocity.z += acceleration * delta;
+    if (forward) velocity.z += acceleration * delta;
+    if (backward) velocity.z -= acceleration * delta;
     velocity.z = Three.MathUtils.damp(
         velocity.z, 0, friction, delta
     );
