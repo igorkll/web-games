@@ -28,6 +28,7 @@ const ball = new Three.Mesh(
 // --------------------------------- main
 
 let current_rhythm = 0;
+let current_pos = 0;
 let current_running = false;
 let current_height_pos = 0;
 let current_height_vel = 0;
@@ -67,11 +68,15 @@ export function render(delta) {
     current_height_vel -= Consts.GRAVITY * delta;
     current_height_pos += current_height_vel * delta;
 
-    ball.position.set(0, current_height_pos, 0);
+    ball.position.set(current_pos * Consts.HOR_VIEW_SIZE, current_height_pos, 0);
 }
 
 export function setRhythm(rhythm) {
     current_rhythm = rhythm;
+}
+
+export function setPos(pos) {
+    current_pos = pos;
 }
 
 export function start() {

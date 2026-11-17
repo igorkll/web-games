@@ -15,6 +15,8 @@ export function init() {
     })
 }
 
-document.addEventListener("click", () => {
-    document.body.requestPointerLock();
-});
+export function setupCanvas(canvas) {
+    canvas.addEventListener('pointermove', (event) => {
+        Game.setPos(event.clientX / window.innerWidth);
+    });
+}

@@ -18,20 +18,27 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(window.devicePixelRatio);
 
 document.body.appendChild(renderer.domElement);
+Gui.setupCanvas(renderer.domElement);
 
 // ------------------------------------- base objects
 
 export const sunLight = new Three.DirectionalLight(0xffffff, 2.0); 
-scene.add(sunLight)
 
 export const ambientLight =  new Three.HemisphereLight(
     0xb1d5ff, // цвет неба
     0x806044, // цвет земли
     1.0
 );
-scene.add(ambientLight)
 
-export const camera = new Three.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 0.1, 1000);
+const aspect = window.innerWidth / window.innerHeight;
+export const camera = new Three.OrthographicCamera(
+    -Consts.HOR_VIEW_SIZE * aspect,
+     Consts.HOR_VIEW_SIZE * aspect,
+     Consts.HOR_VIEW_SIZE,
+    -Consts.HOR_VIEW_SIZE,
+    0.1,
+    1000
+);
 
 // -------------------------------------
 

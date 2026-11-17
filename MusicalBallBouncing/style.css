@@ -15,6 +15,7 @@ body {
 
 canvas {
     touch-action: none;
+    cursor: none;
 }
 
 .gui_base {
@@ -28,4 +29,6 @@ canvas {
     border-radius: 16px;
     background-color: #ffffff54;
     backdrop-filter: blur(10px);
+
+
 }
