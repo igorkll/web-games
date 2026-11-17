@@ -4,7 +4,6 @@ import * as Game from './Game.js';
 // ------------------------------------- init
 
 export const scene = new Three.Scene()
-scene.background = new Three.Color(0x88ccff)
 
 export const renderer = new Three.WebGLRenderer({
     antialias: true,
@@ -19,7 +18,6 @@ document.body.appendChild(renderer.domElement);
 // ------------------------------------- base objects
 
 export const sunLight = new Three.DirectionalLight(0xffffff, 1.0); 
-sunLight.position.set(50, 100, 50);
 scene.add(sunLight)
 
 export const ambientLight = new Three.AmbientLight(0xffffff)
