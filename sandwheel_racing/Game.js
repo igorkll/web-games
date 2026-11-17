@@ -10,6 +10,13 @@ const body = new Three.Mesh(
 );
 car.add(body);
 
+const hood = new Three.Mesh(
+    new Three.BoxGeometry(1.5, 0.4, 1),
+    new Three.MeshStandardMaterial({ color: 0xffff00 })
+);
+hood.position.set(0, 0.5, -1.5);
+car.add(hood);
+
 // --------------------------------- functions
 
 function getLerpValue(val, delta) {
@@ -34,7 +41,7 @@ export function render(delta) {
 
 // --------------------------------- camera
 
-const cameraOffset = new Three.Vector3(0, 4, -8);
+const cameraOffset = new Three.Vector3(0, 4, 8);
 const lookOffset = new Three.Vector3(0, 1, 0);
 
 const cameraTarget = new Three.Vector3();
@@ -46,13 +53,13 @@ function updateCamera(delta) {
     const currentCameraOffset = cameraOffset.clone();
     currentCameraOffset.applyQuaternion(car.quaternion);
     cameraTarget.copy(car.position).add(currentCameraOffset);
-    Main.camera.position.lerp(cameraTarget, getLerpValue(8, delta));
+    Main.camera.position.lerp(cameraTarget, getLerpValue(15, delta));
 
     // look
     const currentLookOffset = lookOffset.clone();
     currentLookOffset.applyQuaternion(car.quaternion);
     lookTarget.copy(car.position).add(currentLookOffset);
-    lerpLookTarget.lerp(lookTarget, getLerpValue(8, delta));
+    lerpLookTarget.lerp(lookTarget, getLerpValue(15, delta));
     Main.camera.lookAt(lerpLookTarget);
 }
 
