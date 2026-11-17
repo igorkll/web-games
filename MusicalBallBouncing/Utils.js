@@ -8,5 +8,7 @@ export function createAudioFromBuffer(mp3Data) {
     });
 
     const url = URL.createObjectURL(blob);
-    return new Audio(url);
+    const audio = new Audio(url);
+    audio._blobUrl = url;
+    return audio;
 }

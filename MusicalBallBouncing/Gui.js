@@ -2,15 +2,31 @@ import * as Modals from './Modals.js';
 import * as Utils from './Utils.js';
 import * as Game from './Game.js';
 
+let _audio;
+
+function startGame(audio) {
+    if (_audio) {
+       _audio.pause();
+        _audio.currentTime = 0;
+        _audio.removeAttribute('src');
+        _audio.load();
+
+        if (_audio._blobUrl) URL.revokeObjectURL(_audio._blobUrl);
+    }
+
+    audio.loop = true;
+    audio.play();
+
+    Game.setRhythm(1);
+    Game.start();
+
+    _audio = audio;
+}
+
 export function init() {
     document.getElementById("import").addEventListener("click", () => {
         Modals.windowSelectFile("mp3", true).then(mp3data => {
-            const audio = Utils.createAudioFromBuffer(mp3data);
-            audio.loop = true;
-            audio.play();
-
-            Game.setRhythm(1);
-            Game.start();
+            startGame(Utils.createAudioFromBuffer(mp3data));
         });
     })
 }
