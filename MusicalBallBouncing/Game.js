@@ -28,8 +28,8 @@ const ball = new Three.Mesh(
 
 function updateAmbientColor(color) {
     Main.scene.background = color;
-    material.uniforms.color1.value.set(0x00ff00);
-    material.uniforms.color2.value.set(0xffff00);
+    material.uniforms.color1.value.copy(color).multiplyScalar(7);
+    material.uniforms.color2.value.copy(color).multiplyScalar(2);
 }
 
 export function init() {
