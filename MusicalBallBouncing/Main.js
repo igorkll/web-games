@@ -54,6 +54,7 @@ function animate() {
 
     if (firstFrame) {
         Game.init();
+        Gui.init();
         firstFrame = false;
     }
 
