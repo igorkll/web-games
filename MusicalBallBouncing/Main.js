@@ -1,6 +1,7 @@
 import * as Three from 'three';
 import * as Game from './Game.js';
 import * as Consts from './Consts.js';
+import * as Gui from './Gui.js';
 
 // ------------------------------------- init
 
