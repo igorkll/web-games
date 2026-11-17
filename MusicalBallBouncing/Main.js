@@ -14,9 +14,6 @@ export const renderer = new Three.WebGLRenderer({
     preserveDrawingBuffer: true
 })
 
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setPixelRatio(window.devicePixelRatio);
-
 document.body.appendChild(renderer.domElement);
 Gui.setupCanvas(renderer.domElement);
 
@@ -32,25 +29,33 @@ export const ambientLight =  new Three.HemisphereLight(
 
 const aspect = window.innerWidth / window.innerHeight;
 export const camera = new Three.OrthographicCamera(
-    -Consts.HOR_VIEW_SIZE * aspect,
-     Consts.HOR_VIEW_SIZE * aspect,
-     Consts.HOR_VIEW_SIZE,
-    -Consts.HOR_VIEW_SIZE,
+    -Consts.HOR_VIEW_SIZE / 2,
+     Consts.HOR_VIEW_SIZE / 2,
+     Consts.HOR_VIEW_SIZE / 2 / aspect,
+    -Consts.HOR_VIEW_SIZE / 2 / aspect,
     0.1,
     1000
 );
 
+function resize() {
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+
+    const aspect = window.innerWidth / window.innerHeight;
+
+    camera.left = -Consts.HOR_VIEW_SIZE / 2;
+    camera.right = Consts.HOR_VIEW_SIZE / 2;
+    camera.top = Consts.HOR_VIEW_SIZE / 2 / aspect;
+    camera.bottom = -Consts.HOR_VIEW_SIZE / 2 / aspect;
+
+    camera.updateProjectionMatrix();
+}
+
+resize();
+
 // -------------------------------------
 
-window.addEventListener('resize', () => {
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-
-    renderer.setSize(width, height);
-
-    camera.aspect = width / height;
-    camera.updateProjectionMatrix();
-});
+window.addEventListener('resize', resize);
 
 let firstFrame = true;
 
