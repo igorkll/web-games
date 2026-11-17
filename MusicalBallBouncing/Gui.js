@@ -17,6 +17,6 @@ export function init() {
 
 export function setupCanvas(canvas) {
     canvas.addEventListener('pointermove', (event) => {
-        Game.setPos(event.clientX / window.innerWidth);
+        Game.setPos((event.clientX / window.innerWidth) - 0.5);
     });
 }
