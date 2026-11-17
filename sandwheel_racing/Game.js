@@ -110,12 +110,12 @@ function selectGear() {
 }
 
 function resetControl() {
-    currentGear = 5;
+    currentGear = 0;
 
     velocity = new Three.Vector3();
     selectGear();
-    friction = 5;
-    brake = 5;
+    friction = 20;
+    brake = 50;
 
     wheelBase = 2.5;
     maxSteeringAngle = Three.MathUtils.degToRad(35);
@@ -131,8 +131,13 @@ function updateControl(delta) {
     if (backward) velocity.z -= acceleration * delta;
 
     const currentBrake = keys.up ? brake : 0;
+    const deceleration = friction + currentBrake;
+
     velocity.z = Three.MathUtils.damp(
-        velocity.z, 0, friction + currentBrake, delta
+        velocity.z,
+        0,
+        deceleration / Math.max(Math.abs(velocity.z), 0.001),
+        delta
     );
 
     // ------------------------------ rotation
