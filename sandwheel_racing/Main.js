@@ -1,7 +1,10 @@
 import * as Three from 'three';
 import * as Game from './Game.js';
+import * as Consts from './Consts.js';
 
 // ------------------------------------- init
+
+export const clock = new Three.Clock();
 
 export const scene = new Three.Scene()
 
@@ -42,11 +45,13 @@ let firstFrame = true;
 function animate() {
     requestAnimationFrame(animate);
 
+    const delta = Math.min(clock.getDelta(), Consts.MAX_DELTA);
+
     if (firstFrame) {
         Game.init();
     }
 
-    Game.render();
+    Game.render(delta);
 
     renderer.render(scene, camera);
 }

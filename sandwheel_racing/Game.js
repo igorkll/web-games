@@ -19,9 +19,9 @@ export function init() {
     Main.scene.add(car);
 }
 
-export function render() {
-    updateCamera();
-    updateControl();
+export function render(delta) {
+    updateCamera(delta);
+    updateControl(delta);
 }
 
 // --------------------------------- camera
@@ -34,7 +34,7 @@ const lookTarget = new Three.Vector3();
 const lerpLookTarget = new Three.Vector3();
 
 
-function updateCamera() {
+function updateCamera(delta) {
     // pos
     const currentCameraOffset = cameraOffset.clone();
     currentCameraOffset.applyQuaternion(car.quaternion);
@@ -89,6 +89,6 @@ document.addEventListener("keyup", (e) => {
     onDoubleSpace_keyup(e)
 });
 
-function updateControl() {
-    
+function updateControl(delta) {
+
 }
