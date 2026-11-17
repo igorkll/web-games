@@ -10,6 +10,12 @@ const body = new Three.Mesh(
 );
 car.add(body);
 
+// ---------------------------------
+
+function getLerpValue(val, delta) {
+    return 1 - Math.exp(-val * delta);
+}
+
 // --------------------------------- main
 
 export function init() {
@@ -33,19 +39,18 @@ const cameraTarget = new Three.Vector3();
 const lookTarget = new Three.Vector3();
 const lerpLookTarget = new Three.Vector3();
 
-
 function updateCamera(delta) {
     // pos
     const currentCameraOffset = cameraOffset.clone();
     currentCameraOffset.applyQuaternion(car.quaternion);
     cameraTarget.copy(car.position).add(currentCameraOffset);
-    Main.camera.position.lerp(cameraTarget, 0.08);
+    Main.camera.position.lerp(cameraTarget, getLerpValue(8, delta));
 
     // look
     const currentLookOffset = lookOffset.clone();
     currentLookOffset.applyQuaternion(car.quaternion);
     lookTarget.copy(car.position).add(currentLookOffset);
-    lerpLookTarget.lerp(lookTarget, 0.08);
+    lerpLookTarget.lerp(lookTarget, getLerpValue(8, delta));
     Main.camera.lookAt(lerpLookTarget);
 }
 
