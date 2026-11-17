@@ -30,7 +30,8 @@ const ball = new Three.Mesh(
 let current_rhythm = 0;
 let current_running = false;
 let current_height_pos = 0;
-let current_timeline = 0;
+let current_height_vel = 0;
+let current_time = 0;
 
 function updateAmbientColor(color) {
     Main.scene.background = color;
@@ -46,21 +47,25 @@ export function init() {
     updateAmbientColor(new Three.Color(0x29074b));
 }
 
-function getJumpHeight(time, jumpDuration, jumpHeight) {
-    const t = (time % jumpDuration) / jumpDuration;
-    return 4 * jumpHeight * t * (1 - t);
+function jump() {
+    current_height_vel = Consts.JUMP_FORCE;
 }
 
 export function render(delta) {
-    current_timeline += delta;
+    current_time += delta;
 
     Main.camera.position.copy(Consts.CAMERA_POS);
     Main.camera.lookAt(Consts.CAMERA_LOOK);
 
     if (current_running) {
-        current_height_pos = getJumpHeight(current_timeline, current_rhythm, 2);
-        console.log(current_height_pos, current_rhythm)
+        if (current_height_pos <= Consts.GROUND_Y) {
+            jump();
+            current_height_pos = Consts.GROUND_Y
+        }
     }
+
+    current_height_vel -= Consts.GRAVITY * delta;
+    current_height_pos += current_height_vel * delta;
 
     ball.position.set(0, current_height_pos, 0);
 }
@@ -71,7 +76,9 @@ export function setRhythm(rhythm) {
 
 export function start() {
     current_running = true;
-    current_timeline = 0;
+    current_height_pos = 0;
+    current_height_vel = 0;
+    current_time = 0;
 }
 
 export function stop() {
