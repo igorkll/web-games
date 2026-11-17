@@ -23,7 +23,7 @@ document.body.appendChild(renderer.domElement);
 export const sunLight = new Three.DirectionalLight(0xffffff, 1.0); 
 scene.add(sunLight)
 
-export const ambientLight = new Three.AmbientLight(0xffffff)
+export const ambientLight = new Three.AmbientLight(0x888888)
 scene.add(ambientLight)
 
 export const camera = new Three.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -49,6 +49,7 @@ function animate() {
 
     if (firstFrame) {
         Game.init();
+        firstFrame = false;
     }
 
     Game.render(delta);

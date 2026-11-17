@@ -23,6 +23,8 @@ export function init() {
 
     Main.scene.background = new Three.Color(0x88ccff);
     Main.scene.add(car);
+
+    resetControl();
 }
 
 export function render(delta) {
@@ -90,12 +92,21 @@ document.addEventListener("keyup", (e) => {
     }
 });
 
-const velocity = new Three.Vector3();
+let velocity;
+let acceleration;
+let maxSpeed;
+let friction;
+let turnSpeed;
 
-const acceleration = 15;
-const maxSpeed = 25;
-const friction = 5;
-const turnSpeed = 2;
+function resetControl() {
+    velocity = new Three.Vector3();
+    acceleration = 15;
+    maxSpeed = 25;
+    friction = 5;
+    turnSpeed = 2;
+
+    car.position.set(0, 0, 0);
+}
 
 function updateControl(delta) {
     const forward = keys.w ? 1 : 0;
@@ -130,4 +141,6 @@ function updateControl(delta) {
     movement.applyQuaternion(car.quaternion);
 
     car.position.addScaledVector(movement, delta);
+
+    console.log(car.position);
 }
