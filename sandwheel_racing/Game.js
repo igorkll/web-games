@@ -52,10 +52,10 @@ export function init() {
 
     resetControl();
 
+    Road.init();
+
     roadProcessTimer = 0;
     Road.process(0);
-
-    Road.init();
 }
 
 export function render(delta) {
