@@ -2,6 +2,8 @@ import * as Modals from './Modals.js';
 import * as Utils from './Utils.js';
 import * as Game from './Game.js';
 
+const gui_base = document.getElementById("gui_base")
+
 let _audio;
 
 function stopGame() {
@@ -16,6 +18,8 @@ function stopGame() {
     }
 
     Game.stop();
+
+    gui_base.classList.add("gui_base_hide");
 }
 
 function startGame(audio) {
@@ -28,6 +32,8 @@ function startGame(audio) {
     Game.start();
 
     _audio = audio;
+
+    gui_base.classList.remove("gui_base_hide");
 }
 
 export function gameover() {
