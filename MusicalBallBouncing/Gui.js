@@ -19,7 +19,7 @@ function stopGame() {
 
     Game.stop();
 
-    gui_base.classList.add("gui_base_hide");
+    gui_base.classList.remove("gui_base_hide");
 }
 
 function startGame(audio) {
@@ -33,7 +33,7 @@ function startGame(audio) {
 
     _audio = audio;
 
-    gui_base.classList.remove("gui_base_hide");
+    gui_base.classList.add("gui_base_hide");
 }
 
 export function gameover() {
