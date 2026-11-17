@@ -40,6 +40,8 @@ function debugInit() {
     }
 }
 
+let roadProcessTimer = 0;
+
 export function init() {
     debugInit();
 
@@ -50,11 +52,19 @@ export function init() {
 
     resetControl();
 
+    roadProcessTimer = 0;
+    Road.process(0);
+
     Road.init();
 }
 
 export function render(delta) {
-    Road.process(delta);
+    roadProcessTimer += delta;
+
+    if (roadProcessTimer > Consts.TILE_PROCESS_PER_TIME) {
+        Road.process(delta);
+        roadProcessTimer = 0;
+    }
     
     updateCamera(delta);
     updateControl(delta);
@@ -152,8 +162,9 @@ function updateControl(delta) {
     car.position.addScaledVector(movement, delta);
 
     // ------------------------------ debug
-    console.log("position", car.position);
-    console.log("velocity", velocity);
+    
+    //console.log("position", car.position);
+    //console.log("velocity", velocity);
 }
 
 document.addEventListener("keydown", (e) => {

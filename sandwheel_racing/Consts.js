@@ -1,3 +1,5 @@
 export const MAX_DELTA = 0.05;
 export const TILE_SIZE = 32;
-export const TILE_LOADING = 5;
+export const TILE_LOADING = 32;
+export const TILE_UNLOADING = 64;
+export const TILE_PROCESS_PER_TIME = 1;
