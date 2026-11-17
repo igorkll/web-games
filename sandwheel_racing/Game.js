@@ -133,17 +133,12 @@ function updateControl(delta) {
     const backward = keys.s ? 1 : 0;
     if (forward) velocity.z -= acceleration * delta;
     if (backward) velocity.z += acceleration * delta;
-
-    // Трение
     velocity.z = Three.MathUtils.damp(
         velocity.z, 0, friction, delta
     );
 
-    // Поворот
-    const speedFactor = Math.min(Math.abs(velocity.z), 1);
-
-    if (keys.a) car.rotation.y += turnSpeed * speedFactor * delta;
-    if (keys.d) car.rotation.y -= turnSpeed * speedFactor * delta;
+    if (keys.a) car.rotation.y += turnSpeed * velocity.z * delta;
+    if (keys.d) car.rotation.y -= turnSpeed * velocity.z * delta;
 
     // Перемещение относительно направления машины
     const movement = new Three.Vector3(0, 0, velocity.z);
