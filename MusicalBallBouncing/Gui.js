@@ -14,3 +14,7 @@ export function init() {
         });
     })
 }
+
+document.addEventListener("click", () => {
+    document.body.requestPointerLock();
+});

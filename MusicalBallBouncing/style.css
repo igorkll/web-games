@@ -12,3 +12,16 @@ html, body {
 body {
     background-color: #000000;
 }
+
+canvas {
+    touch-action: none;
+}
+
+.gui_base {
+    position: absolute;
+    
+
+    border-radius: 16px;
+    background-color: #ffffff54;
+    backdrop-filter: blur(10px);
+}
