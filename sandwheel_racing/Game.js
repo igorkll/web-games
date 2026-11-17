@@ -27,11 +27,16 @@ function getLerpValue(val, delta) {
 // --------------------------------- main
 
 function debugInit() {
-    const debugCube = new Three.Mesh(
-        new Three.BoxGeometry(1, 1, 1),
-        new Three.MeshStandardMaterial({ color: 0xffffff })
-    );
-    Main.scene.add(debugCube);
+    for (let ix = -5; ix < 5; ix++) {
+        for (let iy = -5; iy < 5; iy++) {
+            const debugCube = new Three.Mesh(
+                new Three.BoxGeometry(1, 1, 1),
+                new Three.MeshStandardMaterial({ color: 0xffffff })
+            );
+            debugCube.position.set(ix * 5, 0, iy * 5);
+            Main.scene.add(debugCube);
+        }
+    }
 }
 
 export function init() {
@@ -123,7 +128,7 @@ function resetControl() {
     velocity = new Three.Vector3();
     acceleration = 100;
     friction = 5;
-    turnSpeed = 0.6;
+    turnSpeed = 0.1;
 
     car.position.set(0, 0, 0);
 }
