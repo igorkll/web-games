@@ -5,7 +5,8 @@ import * as Game from './Game.js';
 let roadTiles = [];
 
 function deleteRoadTile(roadTile) {
-
+    Main.scene.remove(roadTile);
+    roadTile.geometry.dispose();
 }
 
 function recreateRoad() {

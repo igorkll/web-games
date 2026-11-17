@@ -26,7 +26,17 @@ function getLerpValue(val, delta) {
 
 // --------------------------------- main
 
+function debugInit() {
+    const debugCube = new Three.Mesh(
+        new Three.BoxGeometry(1, 1, 1),
+        new Three.MeshStandardMaterial({ color: 0xffffff })
+    );
+    Main.scene.add(debugCube);
+}
+
 export function init() {
+    debugInit();
+
     Main.sunLight.position.set(50, 100, 50);
 
     Main.scene.background = new Three.Color(0x88ccff);
@@ -106,16 +116,14 @@ document.addEventListener("keyup", (e) => {
 
 let velocity;
 let acceleration;
-let maxSpeed;
 let friction;
 let turnSpeed;
 
 function resetControl() {
     velocity = new Three.Vector3();
-    acceleration = 15;
-    maxSpeed = 25;
+    acceleration = 100;
     friction = 5;
-    turnSpeed = 2;
+    turnSpeed = 0.6;
 
     car.position.set(0, 0, 0);
 }
@@ -123,27 +131,16 @@ function resetControl() {
 function updateControl(delta) {
     const forward = keys.w ? 1 : 0;
     const backward = keys.s ? 1 : 0;
-
-    // Разгон и торможение
     if (forward) velocity.z -= acceleration * delta;
     if (backward) velocity.z += acceleration * delta;
 
-    // Ограничение скорости
-    velocity.z = Three.MathUtils.clamp(
-        velocity.z,
-        -maxSpeed,
-        maxSpeed
+    // Трение
+    velocity.z = Three.MathUtils.damp(
+        velocity.z, 0, friction, delta
     );
 
-    // Трение
-    if (!forward && !backward) {
-        velocity.z = Three.MathUtils.damp(
-            velocity.z, 0, friction, delta
-        );
-    }
-
     // Поворот
-    const speedFactor = Math.min(Math.abs(velocity.z) / maxSpeed, 1);
+    const speedFactor = Math.min(Math.abs(velocity.z), 1);
 
     if (keys.a) car.rotation.y += turnSpeed * speedFactor * delta;
     if (keys.d) car.rotation.y -= turnSpeed * speedFactor * delta;
@@ -154,5 +151,6 @@ function updateControl(delta) {
 
     car.position.addScaledVector(movement, delta);
 
-    console.log(car.position);
+    console.log("position", car.position);
+    console.log("velocity", velocity);
 }
