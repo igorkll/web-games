@@ -1,5 +1,6 @@
 import * as Three from 'three';
 import * as Main from './Main.js';
+import * as Road from './Road.js';
 
 // --------------------------------- car
 
@@ -32,9 +33,13 @@ export function init() {
     Main.scene.add(car);
 
     resetControl();
+
+    Road.init();
 }
 
 export function render(delta) {
+    Road.process(delta);
+    
     updateCamera(delta);
     updateControl(delta);
 }
