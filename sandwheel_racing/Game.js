@@ -1,20 +1,24 @@
 import * as Three from 'three';
 import * as Main from './Main.js';
 
-const car = new Three.Group();
+// --------------------------------- car
 
+const car = new Three.Group();
 const body = new Three.Mesh(
     new Three.BoxGeometry(2, 0.7, 4),
     new Three.MeshStandardMaterial({ color: 0xff3333 })
 );
-
 car.add(body);
 
-body.position.y = 0.7;
+// --------------------------------- camera vars
 
 const cameraOffset = new Three.Vector3(0, 4, -8);
+const lookOffset = new Three.Vector3(0, 1, 0);
+
 const cameraTarget = new Three.Vector3();
 const lookTarget = new Three.Vector3();
+
+// ---------------------------------
 
 export function init() {
     Main.sunLight.position.set(50, 100, 50);
@@ -24,13 +28,16 @@ export function init() {
 }
 
 function updateCamera() {
-    const offset = cameraOffset.clone();
-    offset.applyQuaternion(car.quaternion);
-    cameraTarget.copy(car.position).add(offset);
+    // pos
+    const currentCameraOffset = cameraOffset.clone();
+    currentCameraOffset.applyQuaternion(car.quaternion);
+    cameraTarget.copy(car.position).add(currentCameraOffset);
     Main.camera.position.lerp(cameraTarget, 0.08);
 
-    lookTarget.copy(car.position);
-    lookTarget.y += 1;
+    // look
+    const currentLookOffset = lookOffset.clone();
+    currentLookOffset.applyQuaternion(car.quaternion);
+    lookTarget.copy(car.position).add(currentLookOffset);
     Main.camera.lookAt(lookTarget);
 }
 
