@@ -68,6 +68,11 @@ export function render(delta) {
     current_height_vel -= Consts.GRAVITY * delta;
     current_height_pos += current_height_vel * delta;
 
+    if (!current_running) {
+        if (current_height_vel < 0) current_height_vel = 0;
+        if (current_height_pos < Consts.GROUND_Y) current_height_pos = Consts.GROUND_Y;
+    }
+
     ball.position.set(current_pos * Consts.HOR_VIEW_SIZE, current_height_pos, 0);
 }
 
