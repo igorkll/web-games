@@ -10,7 +10,7 @@ const body = new Three.Mesh(
 );
 car.add(body);
 
-// ---------------------------------
+// --------------------------------- functions
 
 function getLerpValue(val, delta) {
     return 1 - Math.exp(-val * delta);
@@ -76,8 +76,6 @@ document.addEventListener("keydown", (e) => {
         case "KeyC": keys.down = true; break;
         case "ShiftLeft": keys.sprint = true; break;
     }
-
-    onDoubleSpace_keydown(e)
 });
 
 document.addEventListener("keyup", (e) => {
@@ -90,10 +88,46 @@ document.addEventListener("keyup", (e) => {
         case "KeyC": keys.down = false; break;
         case "ShiftLeft": keys.sprint = false; break;
     }
-
-    onDoubleSpace_keyup(e)
 });
 
-function updateControl(delta) {
+const velocity = new Three.Vector3();
 
+const acceleration = 15;
+const maxSpeed = 25;
+const friction = 5;
+const turnSpeed = 2;
+
+function updateControl(delta) {
+    const forward = keys.w ? 1 : 0;
+    const backward = keys.s ? 1 : 0;
+
+    // Разгон и торможение
+    if (forward) velocity.z -= acceleration * delta;
+    if (backward) velocity.z += acceleration * delta;
+
+    // Ограничение скорости
+    velocity.z = Three.MathUtils.clamp(
+        velocity.z,
+        -maxSpeed,
+        maxSpeed
+    );
+
+    // Трение
+    if (!forward && !backward) {
+        velocity.z = Three.MathUtils.damp(
+            velocity.z, 0, friction, delta
+        );
+    }
+
+    // Поворот
+    const speedFactor = Math.min(Math.abs(velocity.z) / maxSpeed, 1);
+
+    if (keys.a) car.rotation.y += turnSpeed * speedFactor * delta;
+    if (keys.d) car.rotation.y -= turnSpeed * speedFactor * delta;
+
+    // Перемещение относительно направления машины
+    const movement = new Three.Vector3(0, 0, velocity.z);
+    movement.applyQuaternion(car.quaternion);
+
+    car.position.addScaledVector(movement, delta);
 }
