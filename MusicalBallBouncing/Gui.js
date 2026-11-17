@@ -1,5 +1,6 @@
 import * as Modals from './Modals.js';
 import * as Utils from './Utils.js';
+import * as Game from './Game.js';
 
 export function init() {
     document.getElementById("import").addEventListener("click", () => {
@@ -7,6 +8,9 @@ export function init() {
             const audio = Utils.createAudioFromBuffer(mp3data);
             audio.loop = true;
             audio.play();
+
+            Game.setRhythm(1);
+            Game.start();
         });
     })
 }

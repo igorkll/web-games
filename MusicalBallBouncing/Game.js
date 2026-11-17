@@ -26,6 +26,10 @@ const ball = new Three.Mesh(
 
 // --------------------------------- main
 
+let current_rhythm = 0;
+let current_running = false;
+let current_height_pos = 0;
+
 function updateAmbientColor(color) {
     Main.scene.background = color;
     material.uniforms.color1.value.copy(color).multiplyScalar(7);
@@ -43,4 +47,19 @@ export function init() {
 export function render(delta) {
     Main.camera.position.copy(Consts.CAMERA_POS);
     Main.camera.lookAt(Consts.CAMERA_LOOK);
+
+    ball.position.set(0, current_height_pos, 0);
+}
+
+export function setRhythm(rhythm) {
+    current_rhythm = rhythm;
+}
+
+export function start() {
+    current_running = true;
+    current_height_pos = 5;
+}
+
+export function stop() {
+    current_running = false;
 }
