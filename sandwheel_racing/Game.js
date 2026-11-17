@@ -114,9 +114,18 @@ let friction;
 let brake;
 let wheelBase;
 let maxSteeringAngle;
+let currentSteering;
+let turnSeconds;
 
 function selectGear() {
     acceleration = 100 / gears[currentGear];
+}
+
+function changeGear(change) {
+    currentGear += change;
+    if (currentGear < 0) currentGear = 0;
+    if (currentGear >= gears.length) currentGear = gears.length - 1;
+    selectGear();
 }
 
 function resetControl() {
@@ -129,6 +138,8 @@ function resetControl() {
 
     wheelBase = 2.5;
     maxSteeringAngle = Three.MathUtils.degToRad(35);
+    currentSteering = 0;
+    turnSeconds = 0.5;
 
     car.position.set(0, 0.7 / 2, 0);
 }
@@ -151,10 +162,13 @@ function updateControl(delta) {
     );
 
     // ------------------------------ rotation
-    const steering = (keys.a ? 1 : 0) - (keys.d ? 1 : 0);
-    const steeringAngle = steering * maxSteeringAngle;
-    const angularVelocity = velocity.z * Math.tan(steeringAngle) / wheelBase;
+    if (keys.a) currentSteering += (maxSteeringAngle * delta) / turnSeconds;
+    if (keys.d) currentSteering -= (maxSteeringAngle * delta) / turnSeconds;
+
+    const angularVelocity = velocity.z * Math.tan(currentSteering) / wheelBase;
     car.rotation.y += angularVelocity * delta;
+
+    currentSteering = currentSteering * Math.pow(0.1, delta);
 
     // ------------------------------ movement
     const movement = new Three.Vector3(0, 0, velocity.z);
@@ -168,6 +182,7 @@ function updateControl(delta) {
 }
 
 document.addEventListener("keydown", (e) => {
+    console.log(e.code)
     switch (e.code) {
         case "KeyW": keys.w = true; break;
         case "KeyA": keys.a = true; break;
@@ -176,6 +191,9 @@ document.addEventListener("keydown", (e) => {
         case "Space": keys.up = true; break;
         case "KeyC": keys.down = true; break;
         case "ShiftLeft": keys.sprint = true; break;
+
+        case "ArrowUp": changeGear(1); break;
+        case "ArrowDown": changeGear(-1); break;
     }
 });
 
