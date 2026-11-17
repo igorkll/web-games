@@ -41,6 +41,7 @@ function debugInit() {
 }
 
 let roadProcessTimer = 0;
+let previousPosition;
 
 export function init() {
     debugInit();
@@ -55,13 +56,20 @@ export function init() {
     Road.init();
 
     roadProcessTimer = 0;
+    previousPosition = null;
     Road.process(0);
 }
 
 export function render(delta) {
     roadProcessTimer += delta;
 
-    if (roadProcessTimer > Consts.TILE_PROCESS_PER_TIME) {
+    let speed = car.position.distanceTo(previousPosition ?? car.position) / delta;
+    previousPosition = car.position.clone();
+    let div = 1 + (speed / Consts.TILE_PROCESS_DIV_PER_SPEED);
+
+    console.log(div, Consts.TILE_PROCESS_PER_TIME / div)
+
+    if (roadProcessTimer > Consts.TILE_PROCESS_PER_TIME / div) {
         Road.process(delta);
         roadProcessTimer = 0;
     }
