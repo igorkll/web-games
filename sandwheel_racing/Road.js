@@ -12,8 +12,12 @@ function deleteRoadTile(roadTile) {
     roadTiles.delete(roadTile.userData.key);
 }
 
+function getTilePosKey(x, z) {
+    return `${x}:${z}`;
+}
+
 function createRoadTile(x, z) {
-    const key = `${x}:${z}`;
+    const key = getTilePosKey(x, z);
     if (roadTiles.has(key)) return;
 
     const geometry = new Three.PlaneGeometry(Consts.TILE_SIZE, Consts.TILE_SIZE);
@@ -56,9 +60,18 @@ export function process(delta) {
     const cx = Math.floor(Game.car.position.x / Consts.TILE_SIZE)
     const cz = Math.floor(Game.car.position.z / Consts.TILE_SIZE)
 
-    console.log(cx, cz);
-
     for (let ix = cx - Consts.TILE_LOADING; ix <= cx + Consts.TILE_LOADING; ix++)
         for (let iz = cz - Consts.TILE_LOADING; iz <= cz + Consts.TILE_LOADING; iz++)
             createRoadTile(ix, iz);
+
+    let noUnloadKeys = []
+    for (let ix = cx - Consts.TILE_UNLOADING; ix <= cx + Consts.TILE_UNLOADING; ix++)
+        for (let iz = cz - Consts.TILE_UNLOADING; iz <= cz + Consts.TILE_UNLOADING; iz++)
+            noUnloadKeys.push(getTilePosKey(ix, iz))
+
+    for (const roadTile of roadTiles.values()) {
+        if (!noUnloadKeys.includes(roadTile.userData.key)) {
+            deleteRoadTile(roadTile);
+        }
+    }
 }
