@@ -30,6 +30,10 @@ function startGame(audio) {
     _audio = audio;
 }
 
+export function gameover() {
+    stopGame();
+}
+
 export function init() {
     document.getElementById("import").addEventListener("click", () => {
         Modals.windowSelectFile("mp3", true).then(mp3data => {
