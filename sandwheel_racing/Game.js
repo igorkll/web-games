@@ -182,7 +182,6 @@ function updateControl(delta) {
 }
 
 document.addEventListener("keydown", (e) => {
-    console.log(e.code)
     switch (e.code) {
         case "KeyW": keys.w = true; break;
         case "KeyA": keys.a = true; break;

@@ -22,7 +22,7 @@ function createRoadTile(x, z) {
 
     const geometry = new Three.PlaneGeometry(Consts.TILE_SIZE, Consts.TILE_SIZE);
     const material = new Three.MeshStandardMaterial({
-        color: 0x555555
+        color: ((x + z) % 2) == 0 ? 0x555555 : 0x666666
     });
 
     const tile = new Three.Mesh(geometry, material);
