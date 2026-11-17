@@ -3,15 +3,19 @@ import * as Main from './Main.js';
 import * as Game from './Game.js';
 import * as Consts from './Consts.js';
 
-let roadTiles = [];
+const roadTiles = new Map();
 
 function deleteRoadTile(roadTile) {
     Main.scene.remove(roadTile);
     roadTile.geometry.dispose();
     roadTile.material.dispose();
+    roadTiles.delete(roadTile.userData.key);
 }
 
 function createRoadTile(x, z) {
+    const key = `${x}:${z}`;
+    if (roadTiles.has(key)) return;
+
     const geometry = new Three.PlaneGeometry(Consts.TILE_SIZE, Consts.TILE_SIZE);
     const material = new Three.MeshStandardMaterial({
         color: 0x555555
@@ -28,19 +32,30 @@ function createRoadTile(x, z) {
 
     Main.scene.add(tile);
 
+    tile.userData.key = key;
+    tile.userData.x = x;
+    tile.userData.z = z;
+    roadTiles.set(key, tile);
+
     return tile;
 }
 
 function recreateRoad() {
-    roadTiles.forEach(roadTile => deleteRoadTile(roadTile));
-    roadTiles = [];
+    for (const roadTile of roadTiles.values()) {
+        deleteRoadTile(roadTile);
+    }
+
+    roadTiles.clear();
 }
 
 export function init() {
     recreateRoad();
-    createRoadTile(0, 0);
 }
 
 export function process(delta) {
-
+    for (let ix = -Consts.TILE_LOADING; ix < Consts.TILE_LOADING; ix++) {
+        for (let iz = -Consts.TILE_LOADING; iz < Consts.TILE_LOADING; iz++) {
+            createRoadTile(ix, iz);
+        }
+    }
 }
