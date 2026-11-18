@@ -3,6 +3,10 @@ import * as Game from './Game.js';
 import * as Consts from './Consts.js';
 import * as Gui from './Gui.js';
 
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+
 // ------------------------------------- init
 
 export let additionalCameraOffset = 0;
@@ -16,48 +20,12 @@ export const renderer = new Three.WebGLRenderer({
     preserveDrawingBuffer: true
 })
 
+export const composer = new EffectComposer(renderer);
+
 document.body.appendChild(renderer.domElement);
 Gui.setupCanvas(renderer.domElement);
 
-// ------------------------------------- base objects
-
-export const sunLight = new Three.DirectionalLight(0xffffff, 2.0); 
-
-export const ambientLight =  new Three.HemisphereLight(
-    0xb1d5ff, // цвет неба
-    0x806044, // цвет земли
-    1.0
-);
-
-/*
-const aspect = window.innerWidth / window.innerHeight;
-export const camera = new Three.OrthographicCamera(
-    -Consts.HOR_VIEW_SIZE / 2,
-     Consts.HOR_VIEW_SIZE / 2,
-     Consts.HOR_VIEW_SIZE / 2 / aspect,
-    -Consts.HOR_VIEW_SIZE / 2 / aspect,
-    0.1,
-    1000
-);
-
-function resize() {
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
-
-    const aspect = window.innerWidth / window.innerHeight;
-
-    camera.left = -Consts.HOR_VIEW_SIZE / 2;
-    camera.right = Consts.HOR_VIEW_SIZE / 2;
-    camera.top = Consts.HOR_VIEW_SIZE / 2 / aspect;
-    camera.bottom = -Consts.HOR_VIEW_SIZE / 2 / aspect;
-
-    additionalCameraOffset = camera.bottom + 1.5;
-
-    camera.updateProjectionMatrix();
-}
-
-resize();
-*/
+// ------------------------------------- camera
 
 function getVerticalFov(horizontalFov, aspect) {
     const hFov = Three.MathUtils.degToRad(horizontalFov);
@@ -70,9 +38,25 @@ function getVerticalFov(horizontalFov, aspect) {
 const aspect = window.innerWidth / window.innerHeight;
 export const camera = new Three.PerspectiveCamera(getVerticalFov(Consts.FOV, aspect), aspect, 0.1, 1000);
 
+composer.addPass(
+    new RenderPass(scene, camera)
+);
+
+const bloomPass = new UnrealBloomPass(
+    new Three.Vector2(window.innerWidth, window.innerHeight),
+    0.2,
+    0.1,
+    0
+);
+
+composer.addPass(bloomPass);
+
 function resize() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
+
+    composer.setPixelRatio(window.devicePixelRatio);
+    composer.setSize(window.innerWidth, window.innerHeight);
 
     const aspect = window.innerWidth / window.innerHeight;
     camera.aspect = aspect;
@@ -104,7 +88,7 @@ function animate() {
 
     Game.render(delta);
 
-    renderer.render(scene, camera);
+    composer.render();
 }
 
 animate();

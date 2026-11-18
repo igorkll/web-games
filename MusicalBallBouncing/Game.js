@@ -83,7 +83,7 @@ function selectPalette() {
 
 function updateAmbientColor(color) {
     Main.scene.background = color;
-    material.uniforms.color1.value.copy(color).multiplyScalar(7);
+    material.uniforms.color1.value.copy(color).multiplyScalar(15);
     material.uniforms.color2.value.copy(color).multiplyScalar(2);
     old_smoothed_ambient_color = color;
 }
@@ -126,8 +126,6 @@ function autoSelectAmbientColor() {
 }
 
 export function init() {
-    Main.sunLight.position.set(50, 100, 50);
-
     Main.scene.add(ball);
 
     autoSelectAmbientColor();
