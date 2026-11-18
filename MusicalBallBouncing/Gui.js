@@ -112,7 +112,7 @@ function refreshMusicList() {
 export function init() {
     document.getElementById("import").addEventListener("click", () => {
         Modals.windowSelectFile("mp3", true).then(mp3data => {
-            MusicManager.saveMusic({mp3data, rhythm: 2}, true).then(refreshMusicList);
+            MusicManager.saveMusic({mp3data, rhythm: 1.5}, true).then(refreshMusicList);
         });
     })
 
