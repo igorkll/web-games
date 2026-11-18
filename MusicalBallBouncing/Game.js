@@ -45,6 +45,7 @@ const platform_material = new Three.ShaderMaterial({
 // --------------------------------- main
 
 let platform_geometry;
+let platform_geometry_long;
 let platforms = [];
 
 let current_rhythm = 0;
@@ -197,12 +198,14 @@ export function setPos(pos) {
     current_pos = pos;
 }
 
-function spawnPlatform(offsetZ=0) {
+function spawnPlatform(offsetZ=0, longPlatform=false) {
     const maxOffset = (Consts.HOR_VIEW_SIZE / 2) - (platform_width / 2);
-    const platform = new Three.Mesh(platform_geometry, platform_material);
+    const platform = new Three.Mesh(longPlatform ? platform_geometry_long : platform_geometry, platform_material);
     platform.position.set(0, -(platform_height / 2), 0)
     platform.position.z = -offsetZ;
-    platform.position.x = Utils.randomFloat(-maxOffset, maxOffset);
+    if (!longPlatform) {
+        platform.position.x = Utils.randomFloat(-maxOffset, maxOffset);
+    }
     Main.scene.add(platform);
     platforms.push(platform);
     return platform;
@@ -221,7 +224,7 @@ function recreatePlatforms() {
 
     const platformDist = getPlatformDistance();
     for (let i = 0; i < Consts.DEFAULT_PLATFORMS_COUNT; i++) {
-        spawnPlatform(current_platform_offset_z);
+        spawnPlatform(current_platform_offset_z, i == 0);
         current_platform_offset_z += platformDist;
     }
 
@@ -234,6 +237,9 @@ function prepairPlatforms() {
 
     if (platform_geometry) platform_geometry.dispose()
     platform_geometry = new Three.BoxGeometry(platform_width, platform_height, platform_width)
+
+    if (platform_geometry_long) platform_geometry.dispose()
+    platform_geometry_long = new Three.BoxGeometry(Consts.HOR_VIEW_SIZE, platform_height, platform_width)
     
     recreatePlatforms();
 }
