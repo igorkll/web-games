@@ -12,6 +12,7 @@ export const GRAVITY = 20;
 export const JUMP_FORCE = 10;
 export const GROUND_Y = 0;
 export const GAMEOVER_Y = -8;
+export const PLATFORM_DELETE_POSITION = 8;
 
 export const HOR_VIEW_SIZE = 5;
 

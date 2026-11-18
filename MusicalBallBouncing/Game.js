@@ -205,10 +205,16 @@ export function render(delta) {
         let platformCollide = firstJump;
         firstJump = false;
 
-        platforms.forEach(platform => {
+        for (let i = platforms.length - 1; i >= 0; i--) {
+            const platform = platforms[i];
             platform.position.z += getDefaultSpeed() * delta;
             if (!platformCollide && checkPlatformCollision(platform)) platformCollide = true;
-        })
+
+            if (platform.position.z >= Consts.PLATFORM_DELETE_POSITION) {
+                Main.scene.remove(platforms[i]);
+                platforms.splice(i, 1);
+            }
+        }
         
         if (current_height_pos <= Consts.GROUND_Y) {
             if (platformCollide) {
