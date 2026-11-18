@@ -65,9 +65,6 @@ let current_palette;
 let old_smoothed_ambient_color;
 const palettes = [0x29074b, 0x074d1e, 0x07464d, 0x4d071e, 0x3c3a03];
 
-let old_platform_spawn_time;
-let platform_spawn_per_time;
-
 function selectPalette() {
     let index;
 
@@ -179,12 +176,8 @@ export function render(delta) {
     if (current_running) {
         if (current_height_pos <= Consts.GROUND_Y) {
             jump();
-            current_height_pos = Consts.GROUND_Y
-        }
-
-        if (current_time >= old_platform_spawn_time + platform_spawn_per_time) {
             spawnPlatform(current_platform_offset_z);
-            old_platform_spawn_time += platform_spawn_per_time;
+            current_height_pos = Consts.GROUND_Y
         }
 
         platforms.forEach(platform => {
@@ -239,8 +232,6 @@ function recreatePlatforms() {
         spawnPlatform(current_platform_offset_z, i == 0);
         current_platform_offset_z += platformDist;
     }
-
-    spawnPlatform(current_platform_offset_z);
 }
 
 function prepairPlatforms() {
@@ -262,9 +253,6 @@ function realStart() {
     current_height_vel = 0;
     current_time = 0;
     number_block.textContent = '';
-
-    old_platform_spawn_time = 0;
-    platform_spawn_per_time = getFullJumpTime();
 }
 
 let startIntervalId;

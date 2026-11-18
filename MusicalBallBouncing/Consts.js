@@ -23,5 +23,5 @@ export const RHYTHM_MAX = 2;
 
 export const DEFAULT_PLATFORM_WIDTH = 1.2;
 export const DEFAULT_PLATFORM_HEIGHT = 0.2;
-export const DEFAULT_PLATFORMS_COUNT = 10;
+export const DEFAULT_PLATFORMS_COUNT = 20;
 export const DEFAULT_PLATFORM_SPEED = 5;
