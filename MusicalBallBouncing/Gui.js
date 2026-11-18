@@ -64,7 +64,10 @@ function addMusicToList(musicItem, editable=false) {
         const itemButton = document.createElement("div");
         itemButton.classList.add("gui_music_item_button");
         itemButton.innerHTML = "<img class=\"button-img\" src=\"textures/rename.png\"></img>";
-        itemButton.addEventListener("click", () => editMusic(musicItem));
+        itemButton.addEventListener("click", (e) => {
+            e.stopPropagation();
+            editMusic(musicItem);
+        });
         item.appendChild(itemButton);
     }
 

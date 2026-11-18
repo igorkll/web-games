@@ -97,10 +97,6 @@ canvas {
     flex: 1;
 }
 
-.gui_music_item:active {
-    background-color: #599aee62;
-}
-
 .number_block {
     position: absolute;
     top: 0;
