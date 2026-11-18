@@ -58,6 +58,17 @@ canvas {
     pointer-events: none;
 }
 
+.menu-title {
+    color: #ffffff;
+    text-align: center;
+}
+
+.menu-description {
+    color: #ffffff;
+    text-align: center;
+    font-size: 8px;
+}
+
 .gui_music_list {
     height: calc(min(600px, 90dvh));
 
@@ -166,4 +177,3 @@ canvas {
     height: 80%;
     object-fit: contain;
 }
-

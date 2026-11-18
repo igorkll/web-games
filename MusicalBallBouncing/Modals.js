@@ -28,3 +28,71 @@ export function windowSelectFile(ext=null, binary=false) {
         input.click()
     })
 }
+
+const gui_base = document.getElementById("gui_base");
+let _modal = null;
+let _closeModal = null;
+
+export function openModalWindow(modal) {
+    gui_base.classList.add("gui_base_hide");
+    document.body.appendChild(modal);
+
+    setTimeout(() => {
+        modal.classList.remove("gui_base_hide");
+    }, 100);
+
+    let old_modal = _modal;
+
+    if (old_modal) {
+        old_modal.classList.add("gui_base_hide")
+    }
+
+    _modal = modal;
+    _closeModal = () => {
+        if (old_modal) {
+            old_modal.classList.remove("gui_base_hide")
+        } else {
+            gui_base.classList.remove("gui_base_hide")
+        }
+
+        modal.classList.add("gui_base_hide");
+        setTimeout(() => {
+            modal.remove();
+        }, 1000);
+
+        _modal = old_modal;
+    }
+}
+
+export function closeModal() {
+    if (_closeModal) _closeModal();
+}
+
+export function createBaseModal(title) {
+    const modal = document.createElement("div")
+    modal.classList.add("gui_base")
+    modal.classList.add("gui_base_hide");
+
+    const titleObj = document.createElement("div")
+    titleObj.classList.add("menu-title")
+    titleObj.textContent = title
+    modal.appendChild(titleObj)
+
+    return modal
+}
+
+function addModalDescription(modal, description) {
+    const descriptionObj = document.createElement("div")
+    descriptionObj.classList.add("menu-description")
+    descriptionObj.textContent = description
+    modal.appendChild(descriptionObj)
+}
+
+export function modalYesno(title, description=null) {
+    const modal = createBaseModal(title)
+    if (description) addModalDescription(modal, description)
+
+    return new Promise((resolve) => {
+        openModalWindow(modal)
+    });
+}

@@ -61,8 +61,12 @@ function editMusic(musicItem) {
 }
 
 function deleteMusic(musicItem) {
-    MusicManager.deleteMusic(musicItem.id);
-    refreshMusicList();
+    Modals.modalYesno("delete music?", musicItem.music).then(accept => {
+        if (accept) {
+            MusicManager.deleteMusic(musicItem.id);
+            refreshMusicList();
+        }
+    })
 }
 
 function addMusicToList(musicItem, editable=false) {
