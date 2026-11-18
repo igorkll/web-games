@@ -23,7 +23,7 @@ function startGame(audio) {
     audio.loop = true;
     audio.play();
 
-    Game.setRhythm(0.7);
+    Game.setRhythm(1.3);
     Game.start();
 
     _audio = audio;
