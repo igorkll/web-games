@@ -169,6 +169,10 @@ export function render(delta) {
             jump();
             current_height_pos = Consts.GROUND_Y
         }
+
+        platforms.forEach(platform => {
+            platform.position.z += Consts.DEFAULT_PLATFORM_SPEED * delta;
+        })
     }
 
     current_height_vel -= getGravity() * delta;
@@ -194,6 +198,7 @@ function spawnPlatform(offsetZ=0) {
     platform.position.set(0, -(platform_height / 2), 0)
     platform.position.z = -offsetZ;
     Main.scene.add(platform);
+    platforms.push(platform);
     return platform;
 }
 
