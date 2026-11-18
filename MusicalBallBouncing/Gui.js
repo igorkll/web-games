@@ -61,7 +61,7 @@ function editMusic(musicItem) {
 }
 
 function deleteMusic(musicItem) {
-    Modals.modalYesno("delete music?", musicItem.music).then(accept => {
+    Modals.modalYesno("delete music?", musicItem.title).then(accept => {
         if (accept) {
             MusicManager.deleteMusic(musicItem.id);
             refreshMusicList();
@@ -116,7 +116,12 @@ function refreshMusicList() {
 export function init() {
     document.getElementById("import").addEventListener("click", () => {
         Modals.windowSelectFile("mp3", true).then(mp3data => {
-            MusicManager.saveMusic({mp3data, rhythm: 1.5}, true).then(refreshMusicList);
+            let importTbl = {
+                mp3data,
+                rhythm: 1.5,
+                title: "unknown"
+            };
+            MusicManager.saveMusic(importTbl, true).then(refreshMusicList);
         });
     })
 
