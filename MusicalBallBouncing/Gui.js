@@ -24,7 +24,8 @@ function startGame(musicItem) {
 
     let audio;
     if (musicItem.url) {
-        audio = new Audio(musicItem.url);
+        console.log(musicItem.url, new URL(musicItem.url, import.meta.url).href)
+        audio = new Audio(new URL(musicItem.url, import.meta.url).href);
     } else {
         //Utils.createAudioFromBuffer(mp3data)
     }
@@ -49,6 +50,8 @@ function addMusicToList(musicItem) {
     const item = document.createElement("div")
     item.classList.add("gui_music_item")
     item.textContent = musicItem.title;
+
+    item.addEventListener("click", () => startGame(musicItem));
 
     gui_music_list.appendChild(item);
 }
