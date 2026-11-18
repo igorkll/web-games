@@ -46,12 +46,27 @@ export function gameover() {
     Utils.playAudio("sounds/gameover.mp3");
 }
 
-function addMusicToList(musicItem) {
+function editMusic() {
+
+}
+
+function addMusicToList(musicItem, editable=false) {
     const item = document.createElement("div")
     item.classList.add("gui_music_item")
     item.textContent = musicItem.title;
-
     item.addEventListener("click", () => startGame(musicItem));
+
+    const flexItem = document.createElement("div");
+    flexItem.classList.add("flex");
+    item.appendChild(flexItem);
+
+    if (editable) {
+        const itemButton = document.createElement("div");
+        itemButton.classList.add("gui_music_item_button");
+        itemButton.innerHTML = "<img class=\"button-img\" src=\"textures/rename.png\"></img>";
+        itemButton.addEventListener("click", () => editMusic(musicItem));
+        item.appendChild(itemButton);
+    }
 
     gui_music_list.appendChild(item);
 }
@@ -59,7 +74,7 @@ function addMusicToList(musicItem) {
 function refreshMusicList() {
     gui_music_list.innerHTML = "";
 
-    musicList.list.forEach(musicItem => addMusicToList(musicItem));
+    musicList.list.forEach(musicItem => addMusicToList(musicItem, true));
 }
 
 export function init() {
