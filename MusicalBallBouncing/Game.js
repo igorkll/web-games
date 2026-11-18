@@ -97,14 +97,22 @@ export function init() {
     autoSelectAmbientColor();
 }
 
+function getJumpForce() {
+    return Consts.JUMP_FORCE / current_rhythm;
+}
+
+function getGravity() {
+    return Consts.GRAVITY * current_rhythm;
+}
+
 function jump() {
-    current_height_vel = Consts.JUMP_FORCE / current_rhythm;
+    current_height_vel = getJumpForce();
 }
 
 function getBallLandingTime(platformY) {
     const y = current_height_pos;
     const v = current_height_vel;
-    const g = Consts.GRAVITY * current_rhythm;
+    const g = getGravity();
 
     const discriminant = v * v + 2 * g * (y - platformY);
 
@@ -113,6 +121,13 @@ function getBallLandingTime(platformY) {
     const t = (v + Math.sqrt(discriminant)) / g;
 
     return t;
+}
+
+function getFullJumpTime() {
+    const v = getJumpForce();
+    const g = getGravity();
+
+    return 2 * v / g;
 }
 
 export function render(delta) {
@@ -133,7 +148,7 @@ export function render(delta) {
         }
     }
 
-    current_height_vel -= Consts.GRAVITY * current_rhythm * delta;
+    current_height_vel -= getGravity() * delta;
     current_height_pos += current_height_vel * delta;
 
     if (!current_running) {
@@ -151,12 +166,23 @@ export function setPos(pos) {
     current_pos = pos;
 }
 
+function spawnPlatform(offsetZ=0) {
+    
+}
+
 function realStart() {
     current_running = true;
     current_height_pos = 0;
     current_height_vel = 0;
     current_time = 0;
     number_block.textContent = '';
+
+    spawnPlatform();
+
+    setInterval(() => {
+        console.log("JUMP")
+        spawnPlatform();    
+    }, getFullJumpTime() * 1000);
 }
 
 let startIntervalId;

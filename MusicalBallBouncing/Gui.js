@@ -33,7 +33,7 @@ function startGame(musicItem) {
     audio.loop = true;
     audio.play();
 
-    Game.setRhythm(1.1);
+    Game.setRhythm(musicItem.rhythm);
     Game.start();
 
     _audio = audio;

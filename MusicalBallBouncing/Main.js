@@ -40,7 +40,6 @@ export const camera = new Three.OrthographicCamera(
 );
 
 function resize() {
-    console.log(window.innerWidth, window.innerHeight);
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
 

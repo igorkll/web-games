@@ -8,7 +8,7 @@ export let list = [
     {
         url: "./music/green_sky.mp3",
         title: "Green sky",
-        rhythm: 1
+        rhythm: 0.9
     },
     {
         url: "./music/the_britons.mp3",
