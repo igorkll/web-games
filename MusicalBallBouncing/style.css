@@ -13,6 +13,8 @@ html, body {
     touch-action: none;
 
     user-select: none;
+
+    font-size: 30px;
 }
 
 img {
@@ -83,7 +85,6 @@ canvas {
     backdrop-filter: blur(10px);
 
     color: #ffffff;
-    font-size: 30px;
 
     display: flex;
     flex-direction: row;
@@ -133,6 +134,17 @@ canvas {
 
     margin-left: 8px;
 
+}
+
+.gui_music_button {
+    height: calc(70px - (8px * 2));
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #ffffff;
+    border-radius: 7px;
 }
 
 .button-img {
