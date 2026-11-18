@@ -15,3 +15,5 @@ export const GROUND_Y = 0;
 export const HOR_VIEW_SIZE = 5;
 
 export const CHANGE_BACKGROUND_AFTER_TIME = 60;
+export const CHANGE_BACKGROUND_SMOOTHED_TIMER = 10;
+export const CHANGE_BACKGROUND_SMOOTHED_SECONDS = 1;

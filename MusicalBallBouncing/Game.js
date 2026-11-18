@@ -38,6 +38,7 @@ let current_time = 0;
 let old_change_background_time = 0;
 
 let current_palette;
+let old_smoothed_ambient_color;
 const palettes = [0x29074b, 0x074d1e, 0x07464d, 0x4d071e, 0x3c3a03];
 
 function selectPalette() {
@@ -58,13 +59,33 @@ function updateAmbientColor(color) {
 }
 
 function smoothedUpdateAmbientColor(color) {
-    updateAmbientColor(color);
+    let old_color = old_smoothed_ambient_color;
+    let value = 0;
+    let needSteps = 1000 / Consts.CHANGE_BACKGROUND_SMOOTHED_TIMER;
+    let currentStep = 0;
+    let intervalId;
+
+    intervalId = setInterval(() => {
+        currentStep++;
+        value += Consts.CHANGE_BACKGROUND_SMOOTHED_SECONDS / needSteps;
+        updateAmbientColor(old_color.clone().lerp(color, value));
+        if (currentStep >= needSteps) clearInterval(intervalId);
+    }, Consts.CHANGE_BACKGROUND_SMOOTHED_TIMER);
+
+    old_smoothed_ambient_color = color;
 }
 
 function autoSelectAmbientColor() {
     const arr = selectPalette();
     current_palette = arr[1];
-    updateAmbientColor(new Three.Color(arr[0]));
+
+    const color = new Three.Color(arr[0]);
+
+    if (old_smoothed_ambient_color) {
+        smoothedUpdateAmbientColor(color);
+    } else {
+        updateAmbientColor(color);
+    }
 }
 
 export function init() {
