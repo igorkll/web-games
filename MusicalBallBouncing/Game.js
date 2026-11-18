@@ -27,7 +27,25 @@ const ball = new Three.Mesh(
     material
 );
 
+// --------------------------------- ball
+
+const platform_texture = new Three.TextureLoader().load('./textures/ball.png');
+const platform_vertexShader = await fetch('./shaders/ball.vert').then(res => res.text());
+const platform_fragmentShader = await fetch('./shaders/ball.frag').then(res => res.text());
+
+const platform_material = new Three.ShaderMaterial({
+    uniforms: {
+        map: { value: platform_texture }
+    },
+
+    vertexShader: platform_vertexShader,
+    fragmentShader: platform_fragmentShader
+});
+
 // --------------------------------- main
+
+let platform_geometry;
+let platforms = [];
 
 let current_rhythm = 0;
 let current_pos = 0;
@@ -167,10 +185,26 @@ export function setPos(pos) {
 }
 
 function spawnPlatform(offsetZ=0) {
-    
+    const platform = new Three.Mesh(platform_geometry, platform_material);
+    Main.scene.add(platform);
+    return platform;
+}
+
+function deletePlatforms() {
+    platforms.forEach(platform => {
+        Main.scene.remove(platform);
+    });
+    platforms = [];
+}
+
+function recreatePlatforms() {
+    deletePlatforms();
 }
 
 function realStart() {
+    if (platform_geometry) platform_geometry.dispose()
+    platform_geometry = new Three.BoxGeometry(1, 1, 0.2)
+
     current_running = true;
     current_height_pos = 0;
     current_height_vel = 0;
