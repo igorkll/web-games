@@ -98,7 +98,21 @@ export function init() {
 }
 
 function jump() {
-    current_height_vel = Consts.JUMP_FORCE * current_rhythm;
+    current_height_vel = Consts.JUMP_FORCE / current_rhythm;
+}
+
+function getBallLandingTime(platformY) {
+    const y = current_height_pos;
+    const v = current_height_vel;
+    const g = Consts.GRAVITY * current_rhythm;
+
+    const discriminant = v * v + 2 * g * (y - platformY);
+
+    if (discriminant < 0 || g <= 0) return null;
+
+    const t = (v + Math.sqrt(discriminant)) / g;
+
+    return t;
 }
 
 export function render(delta) {
