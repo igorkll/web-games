@@ -47,6 +47,16 @@ export function gameover() {
     Utils.playAudio(Utils.audioFromUrl("./sounds/gameover.mp3"));
 }
 
+document.addEventListener('visibilitychange', () => {
+    if (_audio) {
+        if (document.hidden) {
+            _audio.pause();
+        } else {
+            _audio.play();
+        }
+    }
+});
+
 function editMusic(musicItem) {
 }
 

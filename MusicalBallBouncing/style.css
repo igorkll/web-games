@@ -71,7 +71,8 @@ canvas {
     align-items: stretch;
     gap: 20px;
 
-    overflow: scroll;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .gui_music_item {
