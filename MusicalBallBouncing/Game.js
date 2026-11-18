@@ -68,6 +68,8 @@ let current_palette;
 let old_smoothed_ambient_color;
 const palettes = [0x29074b, 0x074d1e, 0x07464d, 0x4d071e, 0x3c3a03];
 
+let gameover_end;
+
 function selectPalette() {
     let index;
 
@@ -215,6 +217,7 @@ export function render(delta) {
                 current_height_pos = Consts.GROUND_Y;
             } else if (current_height_pos <= Consts.GAMEOVER_Y) {
                 Gui.gameover();
+                gameover_end = true;
             }
         }
     }
@@ -223,7 +226,8 @@ export function render(delta) {
     current_height_pos += current_height_vel * delta;
 
     if (!current_running) {
-        if (current_height_pos < Consts.GROUND_Y) current_height_pos = Consts.GROUND_Y;
+        let lockPos = gameover_end ? Consts.GAMEOVER_Y : Consts.GROUND_Y;
+        if (current_height_pos < lockPos) current_height_pos = lockPos;
     }
 
     ball.position.set(current_pos * Consts.HOR_VIEW_SIZE, current_height_pos + (Consts.SPHERE_DIAMETER / 2), 0);
@@ -284,6 +288,7 @@ function prepairPlatforms() {
 function realStart() {
     current_running = true;
     firstJump = true;
+    gameover_end = false;
     current_height_pos = 0;
     current_height_vel = 0;
     current_time = 0;

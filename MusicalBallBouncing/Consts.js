@@ -11,7 +11,7 @@ export const CAMERA_LOOK = new Three.Vector3(0, 0, 0);
 export const GRAVITY = 20;
 export const JUMP_FORCE = 10;
 export const GROUND_Y = 0;
-export const GAMEOVER_Y = -5;
+export const GAMEOVER_Y = -8;
 
 export const HOR_VIEW_SIZE = 5;
 
