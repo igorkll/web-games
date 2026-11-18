@@ -36,10 +36,28 @@ let current_height_pos = 0;
 let current_height_vel = 0;
 let current_time = 0;
 
+let current_palette;
+const palettes = [0x29074b, 0x074d1e, 0x07464d, 0x4d071e, 0x3c3a03];
+
+function selectPalette() {
+    const index = Utils.randomInt(0, palettes.length - 1);
+    return [palettes[index], index];
+}
+
 function updateAmbientColor(color) {
     Main.scene.background = color;
     material.uniforms.color1.value.copy(color).multiplyScalar(7);
     material.uniforms.color2.value.copy(color).multiplyScalar(2);
+}
+
+function smoothedUpdateAmbientColor(color) {
+    updateAmbientColor(color);
+}
+
+function autoSelectAmbientColor() {
+    const arr = selectPalette();
+    current_palette = arr[1];
+    updateAmbientColor(new Three.Color(arr[0]));
 }
 
 export function init() {
@@ -47,7 +65,7 @@ export function init() {
 
     Main.scene.add(ball);
 
-    updateAmbientColor(new Three.Color(0x29074b));
+    autoSelectAmbientColor();
 }
 
 function jump() {

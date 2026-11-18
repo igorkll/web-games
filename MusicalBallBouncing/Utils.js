@@ -27,3 +27,7 @@ export function stopAudio(audio) {
     audio.load();
     if (audio._blobUrl) URL.revokeObjectURL(audio._blobUrl);
 }
+
+export function randomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
