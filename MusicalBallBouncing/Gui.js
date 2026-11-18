@@ -42,14 +42,13 @@ export function init() {
             startGame(Utils.createAudioFromBuffer(mp3data));
         });
     })
-
-    document.getElementById("test").addEventListener("click", () => {
-        stopGame();
-    })
 }
 
 export function setupCanvas(canvas) {
-    canvas.addEventListener('pointermove', (event) => {
+    const callback = (event) => {
         Game.setPos((event.clientX / window.innerWidth) - 0.5);
-    });
+    };
+
+    canvas.addEventListener('pointermove', callback);
+    canvas.addEventListener('pointerdown', callback);
 }
