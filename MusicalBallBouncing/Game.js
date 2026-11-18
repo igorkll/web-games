@@ -153,6 +153,10 @@ function getFullJumpTime() {
     return 2 * v / g;
 }
 
+function getPlatformDistance() {
+    return Consts.DEFAULT_PLATFORM_SPEED * getFullJumpTime();
+}
+
 export function render(delta) {
     current_time += delta;
 
@@ -212,9 +216,11 @@ function deletePlatforms() {
 function recreatePlatforms() {
     current_platform_offset_z = 0;
     deletePlatforms();
+
+    const platformDist = getPlatformDistance();
     for (let i = 0; i < Consts.DEFAULT_PLATFORMS_COUNT; i++) {
         spawnPlatform(current_platform_offset_z);
-        current_platform_offset_z += 1;
+        current_platform_offset_z += platformDist;
     }
 }
 
