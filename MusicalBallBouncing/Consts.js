@@ -34,3 +34,5 @@ export const PLATFORM_SPEED_MIN = 0.5;
 export const MAX_RHYTHM_FOR_MATH_JUMP_FORCE = 1.1;
 
 export const FOV = 75;
+
+export const MAX_WIDTH = 600;

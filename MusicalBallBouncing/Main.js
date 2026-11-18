@@ -35,15 +35,14 @@ function getVerticalFov(horizontalFov, aspect) {
     );
 }
 
-const aspect = window.innerWidth / window.innerHeight;
-export const camera = new Three.PerspectiveCamera(getVerticalFov(Consts.FOV, aspect), aspect, 0.1, 1000);
+export const camera = new Three.PerspectiveCamera(1, 1, 0.1, 1000);
 
 composer.addPass(
     new RenderPass(scene, camera)
 );
 
 const bloomPass = new UnrealBloomPass(
-    new Three.Vector2(window.innerWidth, window.innerHeight),
+    new Three.Vector2(1, 1),
     0.2,
     0.1,
     0
@@ -52,13 +51,16 @@ const bloomPass = new UnrealBloomPass(
 composer.addPass(bloomPass);
 
 function resize() {
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    let width = window.innerWidth;
+    if (width > Consts.MAX_WIDTH) width = Consts.MAX_WIDTH;
+
+    renderer.setSize(width, window.innerHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
 
     composer.setPixelRatio(window.devicePixelRatio);
-    composer.setSize(window.innerWidth, window.innerHeight);
+    composer.setSize(width, window.innerHeight);
 
-    const aspect = window.innerWidth / window.innerHeight;
+    const aspect = width / window.innerHeight;
     camera.aspect = aspect;
     camera.fov = getVerticalFov(Consts.FOV, aspect);
 
