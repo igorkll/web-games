@@ -3,6 +3,8 @@ import * as Main from './Main.js';
 import * as Consts from './Consts.js';
 import * as Utils from './Utils.js';
 
+const number_block = document.getElementById("number_block")
+
 // --------------------------------- ball
 
 const texture = new Three.TextureLoader().load('./textures/ball.png');
@@ -83,11 +85,27 @@ export function setPos(pos) {
     current_pos = pos;
 }
 
-export function start() {
+function realStart() {
     current_running = true;
     current_height_pos = 0;
     current_height_vel = 0;
     current_time = 0;
+    number_block.textContent = '';
+}
+
+export function start() {
+    let timer = 4;
+    let intervalId;
+    const callback = () => {
+        timer = timer - 1;
+        number_block.textContent = timer;
+        if (timer <= 0) {
+            clearInterval(intervalId);
+            realStart();
+        }
+    };
+    callback();
+    intervalId = setInterval(callback, 1000);
 }
 
 export function stop() {

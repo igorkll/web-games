@@ -12,3 +12,18 @@ export function createAudioFromBuffer(mp3Data) {
     audio._blobUrl = url;
     return audio;
 }
+
+export function playAudio(audio) {
+    audio.addEventListener("ended", audio >= stopAudio(audio))
+
+    audio.loop = false;
+    audio.play();
+}
+
+export function stopAudio(audio) {
+    audio.pause();
+    audio.currentTime = 0;
+    audio.removeAttribute('src');
+    audio.load();
+    if (audio._blobUrl) URL.revokeObjectURL(audio._blobUrl);
+}

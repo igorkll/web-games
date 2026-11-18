@@ -8,12 +8,7 @@ let _audio;
 
 function stopGame() {
     if (_audio) {
-        _audio.pause();
-        _audio.currentTime = 0;
-        _audio.removeAttribute('src');
-        _audio.load();
-
-        if (_audio._blobUrl) URL.revokeObjectURL(_audio._blobUrl);
+        Utils.stopAudio(_audio);
         _audio = null;
     }
 
@@ -38,6 +33,7 @@ function startGame(audio) {
 
 export function gameover() {
     stopGame();
+    Utils.playAudio("sounds/gameover.mp3");
 }
 
 export function init() {
