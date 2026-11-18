@@ -1,7 +1,8 @@
 import * as Modals from './Modals.js';
 import * as Utils from './Utils.js';
 import * as Game from './Game.js';
-import * as musicList from './music/musicList.js';
+import * as MusicList from './music/MusicList.js';
+import * as MusicManager from './MusicManager.js';
 
 const gui_base = document.getElementById("gui_base")
 const gui_music_list = document.getElementById("gui_music_list")
@@ -46,8 +47,12 @@ export function gameover() {
     Utils.playAudio("sounds/gameover.mp3");
 }
 
-function editMusic() {
+function editMusic(musicItem) {
 
+}
+
+function deleteMusic(musicItem) {
+    MusicManager.deleteMusic(musicItem.id);
 }
 
 function addMusicToList(musicItem, editable=false) {
@@ -61,12 +66,21 @@ function addMusicToList(musicItem, editable=false) {
     item.appendChild(flexItem);
 
     if (editable) {
-        const itemButton = document.createElement("div");
+        let itemButton = document.createElement("div");
         itemButton.classList.add("gui_music_item_button");
         itemButton.innerHTML = "<img class=\"button-img\" src=\"textures/rename.png\"></img>";
         itemButton.addEventListener("click", (e) => {
             e.stopPropagation();
             editMusic(musicItem);
+        });
+        item.appendChild(itemButton);
+
+        itemButton = document.createElement("div");
+        itemButton.classList.add("gui_music_item_button");
+        itemButton.innerHTML = "<img class=\"button-img\" src=\"textures/delete.png\"></img>";
+        itemButton.addEventListener("click", (e) => {
+            e.stopPropagation();
+            deleteMusic(musicItem);
         });
         item.appendChild(itemButton);
     }
@@ -77,13 +91,18 @@ function addMusicToList(musicItem, editable=false) {
 function refreshMusicList() {
     gui_music_list.innerHTML = "";
 
-    musicList.list.forEach(musicItem => addMusicToList(musicItem, true));
+    MusicList.list.forEach(musicItem => addMusicToList(musicItem));
+    MusicManager.musicList().then((musicItems) => {
+        musicItems.forEach(musicItem => {
+            addMusicToList(musicItem, true);
+        })
+    })
 }
 
 export function init() {
     document.getElementById("import").addEventListener("click", () => {
         Modals.windowSelectFile("mp3", true).then(mp3data => {
-            startGame({mp3data, rhythm: 1.2});
+            MusicManager.saveMusic({mp3data, rhythm: 1}, true).then(refreshMusicList);
         });
     })
 
