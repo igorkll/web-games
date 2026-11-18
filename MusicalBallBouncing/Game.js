@@ -234,7 +234,7 @@ function realStart() {
     recreatePlatforms();
 
     setInterval(() => {
-        spawnPlatform();    
+        spawnPlatform(current_platform_offset_z);    
     }, getFullJumpTime() * 1000);
 }
 
