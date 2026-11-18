@@ -55,6 +55,11 @@ let current_height_vel = 0;
 let current_time = 0;
 let old_change_background_time = 0;
 
+let platform_height;
+let platform_width;
+
+let current_platform_offset_z;
+
 let current_palette;
 let old_smoothed_ambient_color;
 const palettes = [0x29074b, 0x074d1e, 0x07464d, 0x4d071e, 0x3c3a03];
@@ -173,7 +178,7 @@ export function render(delta) {
         if (current_height_pos < Consts.GROUND_Y) current_height_pos = Consts.GROUND_Y;
     }
 
-    ball.position.set(current_pos * Consts.HOR_VIEW_SIZE, current_height_pos, 0);
+    ball.position.set(current_pos * Consts.HOR_VIEW_SIZE, current_height_pos + (Consts.SPHERE_DIAMETER / 2), 0);
 }
 
 export function setRhythm(rhythm) {
@@ -186,6 +191,8 @@ export function setPos(pos) {
 
 function spawnPlatform(offsetZ=0) {
     const platform = new Three.Mesh(platform_geometry, platform_material);
+    platform.position.set(0, -(platform_height / 2), 0)
+    platform.position.z = -offsetZ;
     Main.scene.add(platform);
     return platform;
 }
@@ -198,12 +205,20 @@ function deletePlatforms() {
 }
 
 function recreatePlatforms() {
+    current_platform_offset_z = 0;
     deletePlatforms();
+    for (let i = 0; i < Consts.DEFAULT_PLATFORMS_COUNT; i++) {
+        spawnPlatform(current_platform_offset_z);
+        current_platform_offset_z += 1;
+    }
 }
 
 function realStart() {
+    platform_width = Consts.DEFAULT_PLATFORM_WIDTH;
+    platform_height = Consts.DEFAULT_PLATFORM_HEIGHT;
+
     if (platform_geometry) platform_geometry.dispose()
-    platform_geometry = new Three.BoxGeometry(1, 1, 0.2)
+    platform_geometry = new Three.BoxGeometry(platform_width, platform_height, platform_width)
 
     current_running = true;
     current_height_pos = 0;
@@ -211,10 +226,9 @@ function realStart() {
     current_time = 0;
     number_block.textContent = '';
 
-    spawnPlatform();
+    recreatePlatforms();
 
     setInterval(() => {
-        console.log("JUMP")
         spawnPlatform();    
     }, getFullJumpTime() * 1000);
 }

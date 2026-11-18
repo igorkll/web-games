@@ -20,3 +20,7 @@ export const CHANGE_BACKGROUND_SMOOTHED_SECONDS = 2;
 
 export const RHYTHM_MIN = 0.7;
 export const RHYTHM_MAX = 2;
+
+export const DEFAULT_PLATFORM_WIDTH = 1.2;
+export const DEFAULT_PLATFORM_HEIGHT = 0.2;
+export const DEFAULT_PLATFORMS_COUNT = 50;
