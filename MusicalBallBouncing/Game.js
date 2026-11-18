@@ -35,12 +35,19 @@ let current_running = false;
 let current_height_pos = 0;
 let current_height_vel = 0;
 let current_time = 0;
+let old_change_background_time = 0;
 
 let current_palette;
 const palettes = [0x29074b, 0x074d1e, 0x07464d, 0x4d071e, 0x3c3a03];
 
 function selectPalette() {
-    const index = Utils.randomInt(0, palettes.length - 1);
+    let index;
+
+    for (let i = 0; i < 50; i++) {
+        index = Utils.randomInt(0, palettes.length - 1);
+        if (index != current_palette) break;
+    }
+
     return [palettes[index], index];
 }
 
@@ -74,6 +81,11 @@ function jump() {
 
 export function render(delta) {
     current_time += delta;
+
+    if (current_time > old_change_background_time + Consts.CHANGE_BACKGROUND_AFTER_TIME) {
+        autoSelectAmbientColor();
+        old_change_background_time = current_time;
+    }
 
     Main.camera.position.set(Consts.CAMERA_POS.x, Consts.CAMERA_POS.y, Consts.CAMERA_POS.z + Main.additionalCameraOffset);
     Main.camera.lookAt(new Three.Vector3(Consts.CAMERA_LOOK.x, Consts.CAMERA_LOOK.y, Consts.CAMERA_LOOK.z + Main.additionalCameraOffset));
@@ -111,21 +123,31 @@ function realStart() {
     number_block.textContent = '';
 }
 
+let startIntervalId;
+
 export function start() {
+    current_time = 0;
+
+    autoSelectAmbientColor();
+
     let timer = 4;
-    let intervalId;
     const callback = () => {
         timer = timer - 1;
         number_block.textContent = timer;
         if (timer <= 0) {
-            clearInterval(intervalId);
+            clearInterval(startIntervalId);
+            startIntervalId = null;
             realStart();
         }
     };
     callback();
-    intervalId = setInterval(callback, 1000);
+    startIntervalId = setInterval(callback, 1000);
 }
 
 export function stop() {
     current_running = false;
+    if (startIntervalId) {
+        clearInterval(startIntervalId);
+        startIntervalId = null;
+    }
 }
