@@ -92,7 +92,31 @@ export function modalYesno(title, description=null) {
     const modal = createBaseModal(title)
     if (description) addModalDescription(modal, description)
 
+    const container = document.createElement("div")
+    container.classList.add("gui_container")
+    modal.appendChild(container)
+
+    const noButton = document.createElement("div")
+    noButton.classList.add("gui_music_button")
+    noButton.textContent = "No"
+    container.appendChild(noButton)
+
+    const yesButton = document.createElement("div")
+    yesButton.classList.add("gui_music_button")
+    yesButton.textContent = "Yes"
+    container.appendChild(yesButton)
+
     return new Promise((resolve) => {
+        noButton.addEventListener("click", () => {
+            closeModal()
+            resolve(false)
+        })
+
+        yesButton.addEventListener("click", () => {
+            closeModal()
+            resolve(true)
+        })
+
         openModalWindow(modal)
     });
 }
