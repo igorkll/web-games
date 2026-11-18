@@ -26,8 +26,8 @@ function startGame(musicItem) {
     if (musicItem.url) {
         console.log(musicItem.url, new URL(musicItem.url, import.meta.url).href)
         audio = new Audio(new URL(musicItem.url, import.meta.url).href);
-    } else {
-        //Utils.createAudioFromBuffer(mp3data)
+    } else if (musicItem.mp3data) {
+        audio = Utils.createAudioFromBuffer(musicItem.mp3data);
     }
 
     audio.loop = true;
@@ -65,7 +65,7 @@ function refreshMusicList() {
 export function init() {
     document.getElementById("import").addEventListener("click", () => {
         Modals.windowSelectFile("mp3", true).then(mp3data => {
-            startGame(Utils.createAudioFromBuffer(mp3data));
+            startGame({mp3data, rhythm: 1.2});
         });
     })
 
