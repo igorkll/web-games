@@ -198,9 +198,11 @@ export function setPos(pos) {
 }
 
 function spawnPlatform(offsetZ=0) {
+    const maxOffset = (Consts.HOR_VIEW_SIZE / 2) - (platform_width / 2);
     const platform = new Three.Mesh(platform_geometry, platform_material);
     platform.position.set(0, -(platform_height / 2), 0)
     platform.position.z = -offsetZ;
+    platform.position.x = Utils.randomFloat(-maxOffset, maxOffset);
     Main.scene.add(platform);
     platforms.push(platform);
     return platform;
@@ -222,22 +224,26 @@ function recreatePlatforms() {
         spawnPlatform(current_platform_offset_z);
         current_platform_offset_z += platformDist;
     }
+
+    spawnPlatform(current_platform_offset_z);
 }
 
-function realStart() {
+function prepairPlatforms() {
     platform_width = Consts.DEFAULT_PLATFORM_WIDTH;
     platform_height = Consts.DEFAULT_PLATFORM_HEIGHT;
 
     if (platform_geometry) platform_geometry.dispose()
     platform_geometry = new Three.BoxGeometry(platform_width, platform_height, platform_width)
+    
+    recreatePlatforms();
+}
 
+function realStart() {
     current_running = true;
     current_height_pos = 0;
     current_height_vel = 0;
     current_time = 0;
     number_block.textContent = '';
-
-    recreatePlatforms();
 
     setInterval(() => {
         spawnPlatform(current_platform_offset_z);    
@@ -247,6 +253,8 @@ function realStart() {
 let startIntervalId;
 
 export function start() {
+    prepairPlatforms();
+
     current_time = 0;
 
     autoSelectAmbientColor();
