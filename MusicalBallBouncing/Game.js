@@ -288,7 +288,6 @@ function prepairPlatforms() {
 function realStart() {
     current_running = true;
     firstJump = true;
-    gameover_end = false;
     current_height_pos = 0;
     current_height_vel = 0;
     current_time = 0;
@@ -301,6 +300,8 @@ export function start() {
     prepairPlatforms();
 
     current_time = 0;
+    gameover_end = false;
+    current_height_pos = Consts.GROUND_Y;
 
     autoSelectAmbientColor();
 
