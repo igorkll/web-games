@@ -56,18 +56,19 @@ function updateAmbientColor(color) {
     Main.scene.background = color;
     material.uniforms.color1.value.copy(color).multiplyScalar(7);
     material.uniforms.color2.value.copy(color).multiplyScalar(2);
+    old_smoothed_ambient_color = color;
 }
 
 function smoothedUpdateAmbientColor(color) {
     let old_color = old_smoothed_ambient_color;
     let value = 0;
-    let needSteps = 1000 / Consts.CHANGE_BACKGROUND_SMOOTHED_TIMER;
+    let needSteps = (1000 / Consts.CHANGE_BACKGROUND_SMOOTHED_TIMER) * Consts.CHANGE_BACKGROUND_SMOOTHED_SECONDS;
     let currentStep = 0;
     let intervalId;
 
     intervalId = setInterval(() => {
         currentStep++;
-        value += Consts.CHANGE_BACKGROUND_SMOOTHED_SECONDS / needSteps;
+        value += 1 / needSteps;
         updateAmbientColor(old_color.clone().lerp(color, value));
         if (currentStep >= needSteps) clearInterval(intervalId);
     }, Consts.CHANGE_BACKGROUND_SMOOTHED_TIMER);
