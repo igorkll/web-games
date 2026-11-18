@@ -182,9 +182,9 @@ export function render(delta) {
             current_height_pos = Consts.GROUND_Y
         }
 
-        if (current_time > old_platform_spawn_time + platform_spawn_per_time) {
+        if (current_time >= old_platform_spawn_time + platform_spawn_per_time) {
             spawnPlatform(current_platform_offset_z);
-            old_platform_spawn_time = current_time;
+            old_platform_spawn_time += platform_spawn_per_time;
         }
 
         platforms.forEach(platform => {
@@ -250,7 +250,7 @@ function prepairPlatforms() {
     if (platform_geometry) platform_geometry.dispose()
     platform_geometry = new Three.BoxGeometry(platform_width, platform_height, platform_width)
 
-    if (platform_geometry_long) platform_geometry.dispose()
+    if (platform_geometry_long) platform_geometry_long.dispose()
     platform_geometry_long = new Three.BoxGeometry(Consts.HOR_VIEW_SIZE, platform_height, platform_width)
     
     recreatePlatforms();
