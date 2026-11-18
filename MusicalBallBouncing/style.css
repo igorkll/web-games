@@ -11,6 +11,12 @@ html, body {
     overflow: hidden !important;
     overscroll-behavior: none;
     touch-action: none;
+
+    user-select: none;
+}
+
+img {
+    -webkit-user-drag: none;
 }
 
 body {
@@ -68,12 +74,31 @@ canvas {
 }
 
 .gui_music_item {
-
     height: 70px;
 
     border-radius: 15px;
     background-color: #ffffff26;
     backdrop-filter: blur(10px);
+
+    color: #ffffff;
+    font-size: 30px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+
+    padding: 8px;
+    transition: background-color 0.1s linear;
+    cursor: pointer;
+}
+
+.flex {
+    flex: 1;
+}
+
+.gui_music_item:active {
+    background-color: #599aee62;
 }
 
 .number_block {
