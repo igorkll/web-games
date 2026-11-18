@@ -98,7 +98,7 @@ export function init() {
 }
 
 function jump() {
-    current_height_vel = Consts.JUMP_FORCE;
+    current_height_vel = Consts.JUMP_FORCE * current_rhythm;
 }
 
 export function render(delta) {
@@ -119,7 +119,7 @@ export function render(delta) {
         }
     }
 
-    current_height_vel -= Consts.GRAVITY * delta;
+    current_height_vel -= Consts.GRAVITY * current_rhythm * delta;
     current_height_pos += current_height_vel * delta;
 
     if (!current_running) {
