@@ -297,6 +297,7 @@ function realStart() {
     current_height_pos = 0;
     current_height_vel = 0;
     current_time = 0;
+    old_change_background_time = 0;
     number_block.textContent = '';
 }
 
@@ -306,6 +307,8 @@ export function start() {
     prepairPlatforms();
 
     current_time = 0;
+    old_change_background_time = 0;
+    
     gameover_end = false;
     current_height_pos = Consts.GROUND_Y;
 
