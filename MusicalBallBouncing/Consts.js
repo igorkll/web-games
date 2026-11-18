@@ -29,7 +29,8 @@ export const DEFAULT_PLATFORM_HEIGHT = 0.2;
 export const DEFAULT_PLATFORMS_COUNT = 20;
 export const DEFAULT_PLATFORM_SPEED = 5;
 
-export const PLATFORM_SPEED_DEPENDENT_FROM_RHYTHM = 8;
+export const PLATFORM_SPEED_DEPENDENT_FROM_RHYTHM = 5;
 export const PLATFORM_SPEED_MIN = 0.5;
+export const MAX_RHYTHM_FOR_MATH_JUMP_FORCE = 1.1;
 
 export const FOV = 75;
