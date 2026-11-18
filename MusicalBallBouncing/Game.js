@@ -127,7 +127,7 @@ export function init() {
 }
 
 function getJumpForce() {
-    return Consts.JUMP_FORCE / current_rhythm;
+    return Consts.JUMP_FORCE;
 }
 
 function getGravity() {
@@ -198,8 +198,8 @@ export function render(delta) {
         old_change_background_time = current_time;
     }
 
-    Main.camera.position.set(Consts.CAMERA_POS.x, Consts.CAMERA_POS.y, Consts.CAMERA_POS.z + Main.additionalCameraOffset);
-    Main.camera.lookAt(new Three.Vector3(Consts.CAMERA_LOOK.x, Consts.CAMERA_LOOK.y, Consts.CAMERA_LOOK.z + Main.additionalCameraOffset));
+    Main.camera.position.set(Consts.CAMERA_POS.x, Consts.CAMERA_POS.y + Main.additionalCameraOffset, Consts.CAMERA_POS.z);
+    Main.camera.lookAt(new Three.Vector3(Consts.CAMERA_LOOK.x, Consts.CAMERA_LOOK.y + Main.additionalCameraOffset, Consts.CAMERA_LOOK.z));
 
     if (current_running) {
         let platformCollide = firstJump;
@@ -286,7 +286,7 @@ function prepairPlatforms() {
     platform_geometry = new Three.BoxGeometry(platform_width, platform_height, platform_width)
 
     if (platform_geometry_long) platform_geometry_long.dispose()
-    platform_geometry_long = new Three.BoxGeometry(Consts.HOR_VIEW_SIZE, platform_height, platform_width)
+    platform_geometry_long = new Three.BoxGeometry(Consts.LONG_PLATFORM_SIZE, platform_height, platform_width)
     
     recreatePlatforms();
 }
