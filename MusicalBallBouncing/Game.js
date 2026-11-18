@@ -135,7 +135,7 @@ function getGravity() {
 }
 
 function getDefaultSpeed() {
-    return Consts.DEFAULT_PLATFORM_SPEED * current_rhythm;
+    return Consts.DEFAULT_PLATFORM_SPEED * Math.max((((current_rhythm - 1) * Consts.PLATFORM_SPEED_DEPENDENT_FROM_RHYTHM) + 1), Consts.PLATFORM_SPEED_MIN);
 }
 
 function jump() {
@@ -308,7 +308,7 @@ export function start() {
 
     current_time = 0;
     old_change_background_time = 0;
-    
+
     gameover_end = false;
     current_height_pos = Consts.GROUND_Y;
 
