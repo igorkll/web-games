@@ -82,7 +82,7 @@ function selectPalette() {
 }
 
 function updateAmbientColor(color) {
-    Main.scene.background = color;
+    Main.scene.background = color.multiplyScalar(0.4);
     material.uniforms.color1.value.copy(color).multiplyScalar(15);
     material.uniforms.color2.value.copy(color).multiplyScalar(2);
     old_smoothed_ambient_color = color;
