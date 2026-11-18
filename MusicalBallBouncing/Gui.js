@@ -26,7 +26,7 @@ function startGame(musicItem) {
     let audio;
     if (musicItem.url) {
         console.log(musicItem.url, new URL(musicItem.url, import.meta.url).href)
-        audio = new Audio(new URL(musicItem.url, import.meta.url).href);
+        audio = Utils.audioFromUrl(musicItem.url);
     } else if (musicItem.mp3data) {
         audio = Utils.createAudioFromBuffer(musicItem.mp3data);
     }
@@ -44,11 +44,10 @@ function startGame(musicItem) {
 
 export function gameover() {
     stopGame();
-    Utils.playAudio("sounds/gameover.mp3");
+    Utils.playAudio(Utils.audioFromUrl("./sounds/gameover.mp3"));
 }
 
 function editMusic(musicItem) {
-
 }
 
 function deleteMusic(musicItem) {

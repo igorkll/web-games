@@ -14,11 +14,16 @@ export function createAudioFromBuffer(mp3Data) {
 }
 
 export function playAudio(audio) {
-    audio.addEventListener("ended", audio >= stopAudio(audio))
+    audio.addEventListener("ended", () => stopAudio(audio))
 
     audio.loop = false;
     audio.play();
 }
+
+export function audioFromUrl(url) {
+    return new Audio(new URL(url, import.meta.url).href);
+}
+
 
 export function stopAudio(audio) {
     audio.pause();

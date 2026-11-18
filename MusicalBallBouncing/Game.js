@@ -2,6 +2,7 @@ import * as Three from 'three';
 import * as Main from './Main.js';
 import * as Consts from './Consts.js';
 import * as Utils from './Utils.js';
+import * as Gui from './Gui.js';
 
 const number_block = document.getElementById("number_block")
 
@@ -47,6 +48,8 @@ const platform_material = new Three.ShaderMaterial({
 let platform_geometry;
 let platform_geometry_long;
 let platforms = [];
+
+let firstJump;
 
 let current_rhythm = 0;
 let current_pos = 0;
@@ -162,6 +165,29 @@ function getPlatformDistance() {
     return getDefaultSpeed() * getFullJumpTime();
 }
 
+function checkPlatformCollision(platform) {
+    const ballRadius = Consts.SPHERE_DIAMETER / 2;
+
+    const ballX = ball.position.x;
+    const ballZ = ball.position.z;
+    const ballY = ball.position.y - ballRadius;
+
+    const platformTop = platform.position.y + platform_height / 2;
+
+    if (current_height_vel > 0) return false;
+
+    if (ballY - platformTop > 0) return false;
+    if (ballY - platformTop < -ballRadius * 2) return false;
+
+    const dx = Math.abs(ballX - platform.position.x);
+    const dz = Math.abs(ballZ - platform.position.z);
+
+    if (dx > platform_width / 2 + ballRadius) return false;
+    if (dz > platform_width / 2 + ballRadius) return false;
+
+    return true;
+}
+
 export function render(delta) {
     current_time += delta;
 
@@ -174,15 +200,23 @@ export function render(delta) {
     Main.camera.lookAt(new Three.Vector3(Consts.CAMERA_LOOK.x, Consts.CAMERA_LOOK.y, Consts.CAMERA_LOOK.z + Main.additionalCameraOffset));
 
     if (current_running) {
-        if (current_height_pos <= Consts.GROUND_Y) {
-            jump();
-            spawnPlatform(current_platform_offset_z);
-            current_height_pos = Consts.GROUND_Y
-        }
+        let platformCollide = firstJump;
+        firstJump = false;
 
         platforms.forEach(platform => {
             platform.position.z += getDefaultSpeed() * delta;
+            if (!platformCollide && checkPlatformCollision(platform)) platformCollide = true;
         })
+        
+        if (current_height_pos <= Consts.GROUND_Y) {
+            if (platformCollide) {
+                jump();
+                spawnPlatform(current_platform_offset_z);
+                current_height_pos = Consts.GROUND_Y;
+            } else if (current_height_pos <= Consts.GAMEOVER_Y) {
+                Gui.gameover();
+            }
+        }
     }
 
     current_height_vel -= getGravity() * delta;
@@ -249,6 +283,7 @@ function prepairPlatforms() {
 
 function realStart() {
     current_running = true;
+    firstJump = true;
     current_height_pos = 0;
     current_height_vel = 0;
     current_time = 0;
