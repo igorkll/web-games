@@ -130,7 +130,10 @@ export function init() {
 
 export function setupCanvas(canvas) {
     const callback = (event) => {
-        Game.setPos((event.offsetX / canvas.clientWidth) - 0.5);
+        let pos = (event.offsetX / canvas.clientWidth) - 0.5;
+        if (pos < -0.5) pos = -0.5;
+        if (pos > 0.5) pos = 0.5;
+        Game.setPos(pos);
     };
 
     canvas.addEventListener('pointermove', callback);
