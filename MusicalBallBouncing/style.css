@@ -193,6 +193,17 @@ canvas {
     gap: 8px;
 }
 
+.gui_container_vertical {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+
+    gap: 8px;
+}
+
 .gui_container_flex > * {
     flex: 1;
     border-radius: 15px;

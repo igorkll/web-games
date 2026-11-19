@@ -96,6 +96,13 @@ export function addContainer(modal, flex=true) {
     return obj;
 }
 
+export function addVContainer(modal) {
+    const obj = document.createElement("div");
+    obj.classList.add("gui_container_vertical");
+    modal.appendChild(obj);
+    return obj;
+}
+
 export function addSubTitle(container, subtitle) {
     const obj = document.createElement("div");
     obj.classList.add("menu-subtitle");

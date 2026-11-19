@@ -70,11 +70,11 @@ function addSeekBarForMusicValue(container, musicItem, field, defVal, min, max, 
         musicItem[field] = val;
         saveCallback();
     }, min, max);
-    seekbar.style.flex = '1';
+    seekbar.style.alignSelf = 'stretch';
 }
 
 function editMusic(musicItem) {
-    const modal = Modals.createBaseModal("edit music settings")
+    const modal = Modals.createBaseModal("Edit music settings")
     Modals.addModalDescription(modal, musicItem.title)
 
     let saveOnDone = false;
@@ -82,20 +82,20 @@ function editMusic(musicItem) {
         saveOnDone = true;
     };
 
-    let container = Modals.addContainer(modal, false);
-    Modals.addSubTitle(container, "rhythm");
+    let container = Modals.addVContainer(modal);
+    Modals.addSubTitle(container, "Rhythm");
     addSeekBarForMusicValue(container, musicItem, "rhythm", Consts.DEFAULT_TRACK_RHYTHM, Consts.RHYTHM_MIN, Consts.RHYTHM_MAX, saveCallback);
 
-    container = Modals.addContainer(modal, false);
-    Modals.addSubTitle(container, "platform width");
+    container = Modals.addVContainer(modal);
+    Modals.addSubTitle(container, "Platform width");
     addSeekBarForMusicValue(container, musicItem, "platform_width_mul", Consts.DEFAULT_TRACK_PLATFORM_WIDTH_MUL, Consts.TRACK_SETS_MUL_MIN, Consts.TRACK_SETS_MUL_MAX, saveCallback);
 
-    container = Modals.addContainer(modal, false);
-    Modals.addSubTitle(container, "ball diameter");
+    container = Modals.addVContainer(modal);
+    Modals.addSubTitle(container, "Ball diameter");
     addSeekBarForMusicValue(container, musicItem, "ball_diameter_mul", Consts.DEFAULT_TRACK_BALL_DIAMETER_MUL, Consts.TRACK_SETS_MUL_MIN, Consts.TRACK_SETS_MUL_MAX, saveCallback);
 
-    container = Modals.addContainer(modal, false);
-    Modals.addSubTitle(container, "platform speed");
+    container = Modals.addVContainer(modal);
+    Modals.addSubTitle(container, "Platform speed");
     addSeekBarForMusicValue(container, musicItem, "platform_speed_mul", Consts.DEFAULT_TRACK_PLATFORM_SPEED_MUL, Consts.TRACK_SETS_MUL_MIN, Consts.TRACK_SETS_MUL_MAX, saveCallback);
 
     container = Modals.addContainer(modal);
@@ -114,7 +114,7 @@ function editMusic(musicItem) {
 }
 
 function deleteMusic(musicItem) {
-    Modals.modalYesno("delete music?", musicItem.title).then(accept => {
+    Modals.modalYesno("Delete music?", musicItem.title).then(accept => {
         if (accept) {
             MusicManager.deleteMusic(musicItem.id);
             refreshMusicList();
