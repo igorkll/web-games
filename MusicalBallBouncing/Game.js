@@ -82,8 +82,10 @@ function selectPalette() {
 }
 
 function updateAmbientColor(color) {
-    Main.scene.background = color.multiplyScalar(0.4);
-    material.uniforms.color1.value.copy(color).multiplyScalar(15);
+    document.body.style.backgroundColor = color.clone().multiplyScalar(0.2).getStyle();
+    Main.canvasItem.style.boxShadow = `0px 0px 15px 5px ${color.clone().multiplyScalar(1.2).getStyle()}`;
+    Main.scene.background = color.clone().multiplyScalar(0.4);
+    material.uniforms.color1.value.copy(color).multiplyScalar(10);
     material.uniforms.color2.value.copy(color).multiplyScalar(2);
     old_smoothed_ambient_color = color;
 }
@@ -189,8 +191,11 @@ function checkPlatformCollision(platform) {
     const dx = Math.abs(ballX - platform.position.x);
     const dz = Math.abs(ballZ - platform.position.z);
 
-    if (dx > platform_width / 2 + ballRadius) return false;
-    if (dz > platform_width / 2 + ballRadius) return false;
+    //if (dx > platform_width / 2 + ballRadius) return false;
+    //if (dz > platform_width / 2 + ballRadius) return false;
+
+    if (dx > platform_width / 2) return false;
+    if (dz > platform_width / 2) return false;
 
     return true;
 }
