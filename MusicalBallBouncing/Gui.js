@@ -65,10 +65,11 @@ document.addEventListener('visibilitychange', () => {
     }
 });
 
-function addSeekBarForMusicValue(container, musicItem, field, defVal) {
+function addSeekBarForMusicValue(container, musicItem, field, defVal, min, max, saveCallback) {
     let seekbar = Modals.addSeekBar(container, musicItem[field] ?? defVal, null, (val) => {
         musicItem[field] = val;
-    }, Consts.RHYTHM_MIN, Consts.RHYTHM_MAX);
+        saveCallback();
+    }, min, max);
     seekbar.style.flex = '1';
 }
 
@@ -76,9 +77,26 @@ function editMusic(musicItem) {
     const modal = Modals.createBaseModal("edit music settings")
     Modals.addModalDescription(modal, musicItem.title)
 
+    let saveOnDone = false;
+    const saveCallback = () => {
+        saveOnDone = true;
+    };
+
     let container = Modals.addContainer(modal, false);
     Modals.addSubTitle(container, "rhythm");
-    addSeekBarForMusicValue(container, musicItem);
+    addSeekBarForMusicValue(container, musicItem, "rhythm", Consts.DEFAULT_TRACK_RHYTHM, Consts.RHYTHM_MIN, Consts.RHYTHM_MAX, saveCallback);
+
+    container = Modals.addContainer(modal, false);
+    Modals.addSubTitle(container, "platform width");
+    addSeekBarForMusicValue(container, musicItem, "platform_width_mul", Consts.DEFAULT_TRACK_PLATFORM_WIDTH_MUL, Consts.TRACK_SETS_MUL_MIN, Consts.TRACK_SETS_MUL_MAX, saveCallback);
+
+    container = Modals.addContainer(modal, false);
+    Modals.addSubTitle(container, "ball diameter");
+    addSeekBarForMusicValue(container, musicItem, "ball_diameter_mul", Consts.DEFAULT_TRACK_BALL_DIAMETER_MUL, Consts.TRACK_SETS_MUL_MIN, Consts.TRACK_SETS_MUL_MAX, saveCallback);
+
+    container = Modals.addContainer(modal, false);
+    Modals.addSubTitle(container, "platform speed");
+    addSeekBarForMusicValue(container, musicItem, "platform_speed_mul", Consts.DEFAULT_TRACK_PLATFORM_SPEED_MUL, Consts.TRACK_SETS_MUL_MIN, Consts.TRACK_SETS_MUL_MAX, saveCallback);
 
     container = Modals.addContainer(modal);
     const doneButton = Modals.addButton(container, "Done");
@@ -87,6 +105,7 @@ function editMusic(musicItem) {
     return new Promise((resolve) => {
         doneButton.addEventListener("click", () => {
             Modals.closeModal()
+            if (saveOnDone) MusicManager.saveMusic(musicItem).then(refreshMusicList);
             resolve()
         })
 
