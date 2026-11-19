@@ -52,6 +52,10 @@ let platforms = [];
 let firstJump;
 
 let current_rhythm = 0;
+let current_platform_width_mul = 0;
+let current_ball_diameter_mul = 0;
+let current_platform_speed_mul = 0;
+
 let current_pos = 0;
 let current_running = false;
 let current_height_pos = 0;
@@ -141,6 +145,10 @@ function getGravity() {
     return Consts.GRAVITY * current_rhythm;
 }
 
+function getSphereDiameter() {
+    return Consts.SPHERE_DIAMETER * current_ball_diameter_mul;
+}
+
 function getDefaultSpeed() {
     return Consts.DEFAULT_PLATFORM_SPEED * Math.max((((current_rhythm - 1) * Consts.PLATFORM_SPEED_DEPENDENT_FROM_RHYTHM) + 1), Consts.PLATFORM_SPEED_MIN);
 }
@@ -175,7 +183,8 @@ function getPlatformDistance() {
 }
 
 function checkPlatformCollision(platform) {
-    const ballRadius = Consts.SPHERE_DIAMETER / 2;
+    const SPHERE_DIAMETER = getSphereDiameter();
+    const ballRadius = SPHERE_DIAMETER / 2;
 
     const ballX = ball.position.x;
     const ballZ = ball.position.z;
@@ -197,7 +206,7 @@ function checkPlatformCollision(platform) {
     //if (dx > platform_width / 2) return false;
     //if (dz > platform_width / 2) return false;
 
-    let checkAdd = (Consts.SPHERE_DIAMETER * Consts.BALL_DIAMETER_MUL_CHECK) / 2
+    let checkAdd = (SPHERE_DIAMETER * Consts.BALL_DIAMETER_MUL_CHECK) / 2
     if (dx > platform_width / 2 + checkAdd) return false;
     if (dz > platform_width / 2 + checkAdd) return false;
 
@@ -250,11 +259,16 @@ export function render(delta) {
         if (current_height_pos < lockPos) current_height_pos = lockPos;
     }
 
-    ball.position.set(current_pos * Consts.HOR_VIEW_SIZE, current_height_pos + (Consts.SPHERE_DIAMETER / 2), 0);
+    ball.position.set(current_pos * Consts.HOR_VIEW_SIZE, current_height_pos + (getSphereDiameter() / 2), 0);
 }
 
 export function setData(musicItem) {
     current_rhythm = musicItem.rhythm ?? Consts.DEFAULT_TRACK_RHYTHM;
+    current_platform_width_mul = musicItem.platform_width_mul ?? Consts.DEFAULT_TRACK_PLATFORM_WIDTH_MUL;
+    current_ball_diameter_mul = musicItem.ball_diameter_mul ?? Consts.DEFAULT_TRACK_BALL_DIAMETER_MUL;
+    current_platform_speed_mul = musicItem.platform_speed_mul ?? Consts.DEFAULT_TRACK_PLATFORM_SPEED_MUL;
+
+    ball.scale.setScalar(current_ball_diameter_mul);
 }
 
 export function setPos(pos) {
@@ -293,7 +307,7 @@ function recreatePlatforms() {
 }
 
 function prepairPlatforms() {
-    platform_width = Consts.DEFAULT_PLATFORM_WIDTH;
+    platform_width = Consts.DEFAULT_PLATFORM_WIDTH * current_platform_width_mul;
     platform_height = Consts.DEFAULT_PLATFORM_HEIGHT;
 
     if (platform_geometry) platform_geometry.dispose()
