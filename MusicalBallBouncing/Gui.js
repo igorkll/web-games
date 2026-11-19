@@ -40,7 +40,7 @@ function startGame(musicItem) {
     audio.loop = true;
     audio.play();
 
-    Game.setRhythm(musicItem.rhythm);
+    Game.setRhythm(musicItem.rhythm ?? 1);
     Game.start();
 
     _audio = audio;
@@ -68,13 +68,11 @@ function editMusic(musicItem) {
     const modal = Modals.createBaseModal("edit music settings")
     Modals.addModalDescription(modal, musicItem.title)
 
-    const container = document.createElement("div")
-    container.classList.add("gui_container")
-    modal.appendChild(container)
+    let container = Modals.addContainer(modal);
+    Modals.addSubTitle(container, "rhythm");
 
-    const doneButton = document.createElement("div")
-    doneButton.classList.add("gui_music_button")
-    doneButton.textContent = "Done"
+    container = Modals.addContainer(modal);
+    const doneButton = Modals.addButton(container, "Done");
     container.appendChild(doneButton)
 
     return new Promise((resolve) => {

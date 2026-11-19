@@ -82,10 +82,37 @@ export function createBaseModal(title) {
 }
 
 export function addModalDescription(modal, description) {
-    const descriptionObj = document.createElement("div")
-    descriptionObj.classList.add("menu-description")
-    descriptionObj.textContent = description
-    modal.appendChild(descriptionObj)
+    const descriptionObj = document.createElement("div");
+    descriptionObj.classList.add("menu-description");
+    descriptionObj.textContent = description;
+    modal.appendChild(descriptionObj);
+}
+
+export function addContainer(modal) {
+    const obj = document.createElement("div");
+    obj.classList.add("gui_container");
+    modal.appendChild(obj);
+    return obj;
+}
+
+export function addSubTitle(container, subtitle) {
+    const obj = document.createElement("div");
+    obj.classList.add("menu-subtitle");
+    obj.textContent = subtitle;
+    container.appendChild(obj);
+    return obj;
+}
+
+export function addButton(container, text) {
+    const obj = document.createElement("div");
+    obj.classList.add("gui_music_button");
+    obj.textContent = text;
+    container.appendChild(obj);
+    return obj;
+}
+
+export function addSeekBar(container, ) {
+
 }
 
 export function modalYesno(title, description=null) {

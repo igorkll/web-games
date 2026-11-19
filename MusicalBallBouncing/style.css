@@ -77,7 +77,14 @@ canvas {
 .menu-description {
     color: #ffffff;
     text-align: center;
-    font-size: 22px;
+    font-size: 25px;
+    text-shadow: 0px 0px 3px black;
+}
+
+.menu-subtitle {
+    color: #ffffff;
+    text-align: start;
+    font-size: 20px;
     text-shadow: 0px 0px 3px black;
 }
 
