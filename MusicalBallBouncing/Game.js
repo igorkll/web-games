@@ -150,7 +150,7 @@ function getSphereDiameter() {
 }
 
 function getDefaultSpeed() {
-    return Consts.DEFAULT_PLATFORM_SPEED * Math.max((((current_rhythm - 1) * Consts.PLATFORM_SPEED_DEPENDENT_FROM_RHYTHM) + 1), Consts.PLATFORM_SPEED_MIN);
+    return Consts.DEFAULT_PLATFORM_SPEED * current_platform_speed_mul * Math.max((((current_rhythm - 1) * Consts.PLATFORM_SPEED_DEPENDENT_FROM_RHYTHM) + 1), Consts.PLATFORM_SPEED_MIN);
 }
 
 function jump() {
