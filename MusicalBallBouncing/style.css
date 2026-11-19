@@ -184,6 +184,8 @@ canvas {
 
     padding: 6px;
     font-size: 25px;
+
+    border-radius: 15px;
 }
 
 .gui_container {
@@ -209,7 +211,6 @@ canvas {
 
 .gui_container_flex > * {
     flex: 1;
-    border-radius: 15px;
 }
 
 .button-img {
