@@ -181,6 +181,9 @@ canvas {
     border-radius: 7px;
 
     cursor: pointer;
+
+    padding: 6px;
+    font-size: 25px;
 }
 
 .gui_container {

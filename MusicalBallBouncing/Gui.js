@@ -82,31 +82,60 @@ function editMusic(musicItem) {
         saveOnDone = true;
     };
 
+    let forceUpdateValues = []
+
     let container = Modals.addVContainer(modal);
     Modals.addSubTitle(container, "Rhythm");
-    addSeekBarForMusicValue(container, musicItem, "rhythm", Consts.DEFAULT_TRACK_RHYTHM, Consts.RHYTHM_MIN, Consts.RHYTHM_MAX, saveCallback);
+    forceUpdateValues.push(
+        addSeekBarForMusicValue(container, musicItem, "rhythm", Consts.DEFAULT_TRACK_RHYTHM, Consts.RHYTHM_MIN, Consts.RHYTHM_MAX, saveCallback)
+    );
 
     container = Modals.addVContainer(modal);
     Modals.addSubTitle(container, "Platform width");
-    addSeekBarForMusicValue(container, musicItem, "platform_width_mul", Consts.DEFAULT_TRACK_PLATFORM_WIDTH_MUL, Consts.TRACK_SETS_MUL_MIN, Consts.TRACK_SETS_MUL_MAX, saveCallback);
+    forceUpdateValues.push(
+        addSeekBarForMusicValue(container, musicItem, "platform_width_mul", Consts.DEFAULT_TRACK_PLATFORM_WIDTH_MUL, Consts.TRACK_SETS_MUL_MIN, Consts.TRACK_SETS_MUL_MAX, saveCallback)
+    );
 
     container = Modals.addVContainer(modal);
     Modals.addSubTitle(container, "Ball diameter");
-    addSeekBarForMusicValue(container, musicItem, "ball_diameter_mul", Consts.DEFAULT_TRACK_BALL_DIAMETER_MUL, Consts.TRACK_SETS_MUL_MIN, Consts.TRACK_SETS_MUL_MAX, saveCallback);
+    forceUpdateValues.push(
+        addSeekBarForMusicValue(container, musicItem, "ball_diameter_mul", Consts.DEFAULT_TRACK_BALL_DIAMETER_MUL, Consts.TRACK_SETS_MUL_MIN, Consts.TRACK_SETS_MUL_MAX, saveCallback)
+    );
 
     container = Modals.addVContainer(modal);
     Modals.addSubTitle(container, "Platform speed");
-    addSeekBarForMusicValue(container, musicItem, "platform_speed_mul", Consts.DEFAULT_TRACK_PLATFORM_SPEED_MUL, Consts.TRACK_SETS_MUL_MIN, Consts.TRACK_SETS_MUL_MAX, saveCallback);
+    forceUpdateValues.push(
+        addSeekBarForMusicValue(container, musicItem, "platform_speed_mul", Consts.DEFAULT_TRACK_PLATFORM_SPEED_MUL, Consts.TRACK_SETS_MUL_MIN, Consts.TRACK_SETS_MUL_MAX, saveCallback)
+    );
 
-    container = Modals.addContainer(modal);
-    const doneButton = Modals.addButton(container, "Done");
-    container.appendChild(doneButton)
+    container = Modals.addContainer(modal, false);
+    const saveButton = Modals.addButton(container, "Save");
+    saveButton.style.flex = "1";
+    container.appendChild(saveButton)
+
+    const randomButton = Modals.addButton(container, "Random");
+    container.appendChild(randomButton)
+
+    const resetButton = Modals.addButton(container, "Reset");
+    container.appendChild(resetButton)
 
     return new Promise((resolve) => {
-        doneButton.addEventListener("click", () => {
+        randomButton.addEventListener("click", async () => {
+            forceUpdateValues.forEach(forceUpdateValue => {
+                forceUpdateValue();
+            });
+            await MusicManager.saveMusic(musicItem);
+            refreshMusicList();
+            resolve();
+        })
+
+        saveButton.addEventListener("click", async () => {
             Modals.closeModal()
-            if (saveOnDone) MusicManager.saveMusic(musicItem).then(refreshMusicList);
-            resolve()
+            if (saveOnDone) {
+                await MusicManager.saveMusic(musicItem);
+                refreshMusicList();
+            }
+            resolve();
         })
 
         Modals.openModalWindow(modal)
