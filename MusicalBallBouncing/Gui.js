@@ -71,6 +71,10 @@ function addSeekBarForMusicValue(container, musicItem, field, defVal, min, max, 
         saveCallback();
     }, min, max);
     seekbar.style.alignSelf = 'stretch';
+
+    return () => {
+        seekbar.value = musicItem[field];
+    };
 }
 
 function editMusic(musicItem) {
@@ -82,7 +86,7 @@ function editMusic(musicItem) {
         saveOnDone = true;
     };
 
-    let forceUpdateValues = []
+    let forceUpdateValues = [];
 
     let container = Modals.addVContainer(modal);
     Modals.addSubTitle(container, "Rhythm");
@@ -119,27 +123,43 @@ function editMusic(musicItem) {
     const resetButton = Modals.addButton(container, "Reset");
     container.appendChild(resetButton)
 
-    return new Promise((resolve) => {
-        randomButton.addEventListener("click", async () => {
-            forceUpdateValues.forEach(forceUpdateValue => {
-                forceUpdateValue();
-            });
+    randomButton.addEventListener("click", async () => {
+        musicItem.rhythm = Utils.randomFloat(Consts.RHYTHM_MIN, Consts.RHYTHM_MAX);
+        musicItem.platform_width_mul = Utils.randomFloat(Consts.TRACK_SETS_MUL_MIN, Consts.TRACK_SETS_MUL_MAX);
+        musicItem.ball_diameter_mul = Utils.randomFloat(Consts.TRACK_SETS_MUL_MIN, Consts.TRACK_SETS_MUL_MAX);
+        musicItem.platform_speed_mul = Utils.randomFloat(Consts.TRACK_SETS_MUL_MIN, Consts.TRACK_SETS_MUL_MAX);
+
+        forceUpdateValues.forEach(forceUpdateValue => {
+            forceUpdateValue();
+        });
+
+        await MusicManager.saveMusic(musicItem);
+        refreshMusicList();
+    });
+
+    resetButton.addEventListener("click", async () => {
+        musicItem.rhythm = Consts.DEFAULT_TRACK_RHYTHM;
+        musicItem.platform_width_mul = Consts.DEFAULT_TRACK_PLATFORM_WIDTH_MUL;
+        musicItem.ball_diameter_mul = Consts.DEFAULT_TRACK_BALL_DIAMETER_MUL;
+        musicItem.platform_speed_mul = Consts.DEFAULT_TRACK_PLATFORM_SPEED_MUL;
+
+        forceUpdateValues.forEach(forceUpdateValue => {
+            forceUpdateValue();
+        });
+
+        await MusicManager.saveMusic(musicItem);
+        refreshMusicList();
+    });
+
+    saveButton.addEventListener("click", async () => {
+        Modals.closeModal()
+        if (saveOnDone) {
             await MusicManager.saveMusic(musicItem);
             refreshMusicList();
-            resolve();
-        })
-
-        saveButton.addEventListener("click", async () => {
-            Modals.closeModal()
-            if (saveOnDone) {
-                await MusicManager.saveMusic(musicItem);
-                refreshMusicList();
-            }
-            resolve();
-        })
-
-        Modals.openModalWindow(modal)
+        }
     });
+
+    Modals.openModalWindow(modal)
 }
 
 function deleteMusic(musicItem) {
