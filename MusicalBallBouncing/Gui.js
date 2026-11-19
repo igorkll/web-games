@@ -41,7 +41,7 @@ function startGame(musicItem) {
     audio.loop = true;
     audio.play();
 
-    Game.setRhythm(musicItem.rhythm ?? 1);
+    Game.setData(musicItem);
     Game.start();
 
     _audio = audio;
@@ -65,16 +65,20 @@ document.addEventListener('visibilitychange', () => {
     }
 });
 
+function addSeekBarForMusicValue(container, musicItem, field, defVal) {
+    let seekbar = Modals.addSeekBar(container, musicItem[field] ?? defVal, null, (val) => {
+        musicItem[field] = val;
+    }, Consts.RHYTHM_MIN, Consts.RHYTHM_MAX);
+    seekbar.style.flex = '1';
+}
+
 function editMusic(musicItem) {
     const modal = Modals.createBaseModal("edit music settings")
     Modals.addModalDescription(modal, musicItem.title)
 
     let container = Modals.addContainer(modal, false);
     Modals.addSubTitle(container, "rhythm");
-    let seekbar = Modals.addSeekBar(container, musicItem.rhythm ?? 1, null, (val) => {
-        musicItem.rhythm = val;
-    }, Consts.RHYTHM_MIN, Consts.RHYTHM_MAX);
-    seekbar.style.flex = '1';
+    addSeekBarForMusicValue(container, musicItem);
 
     container = Modals.addContainer(modal);
     const doneButton = Modals.addButton(container, "Done");
@@ -148,7 +152,10 @@ export function init() {
         Modals.windowSelectFile("mp3", true).then(mp3data => {
             let importTbl = {
                 mp3data,
-                rhythm: 1.5,
+                rhythm: Consts.DEFAULT_TRACK_RHYTHM,
+                platform_width_mul: Consts.DEFAULT_TRACK_PLATFORM_WIDTH_MUL,
+                ball_diameter_mul: Consts.DEFAULT_TRACK_BALL_DIAMETER_MUL,
+                platform_speed_mul: Consts.DEFAULT_TRACK_PLATFORM_SPEED_MUL,
                 title: "unknown"
             };
             MusicManager.saveMusic(importTbl, true).then(refreshMusicList);

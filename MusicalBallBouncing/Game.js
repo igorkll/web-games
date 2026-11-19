@@ -253,8 +253,8 @@ export function render(delta) {
     ball.position.set(current_pos * Consts.HOR_VIEW_SIZE, current_height_pos + (Consts.SPHERE_DIAMETER / 2), 0);
 }
 
-export function setRhythm(rhythm) {
-    current_rhythm = rhythm;
+export function setData(musicItem) {
+    current_rhythm = musicItem.rhythm ?? Consts.DEFAULT_TRACK_RHYTHM;
 }
 
 export function setPos(pos) {
