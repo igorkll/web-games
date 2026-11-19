@@ -27,7 +27,6 @@ body {
 
 canvas {
     touch-action: none;
-    cursor: none;
     margin-left: auto;
     margin-right: auto;
 }

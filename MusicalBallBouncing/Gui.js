@@ -3,11 +3,16 @@ import * as Utils from './Utils.js';
 import * as Game from './Game.js';
 import * as MusicList from './music/MusicList.js';
 import * as MusicManager from './MusicManager.js';
+import * as Main from './Main.js';
 
 const gui_base = document.getElementById("gui_base")
 const gui_music_list = document.getElementById("gui_music_list")
 
 let _audio;
+
+function hideCursor(state) {
+    Main.canvasItem.style.cursor = state ? "none" : "";
+}
 
 function stopGame() {
     if (_audio) {
@@ -18,6 +23,7 @@ function stopGame() {
     Game.stop();
 
     gui_base.classList.remove("gui_base_hide");
+    hideCursor(false);
 }
 
 function startGame(musicItem) {
@@ -40,6 +46,7 @@ function startGame(musicItem) {
     _audio = audio;
 
     gui_base.classList.add("gui_base_hide");
+    hideCursor(true);
 }
 
 export function gameover() {
@@ -58,6 +65,26 @@ document.addEventListener('visibilitychange', () => {
 });
 
 function editMusic(musicItem) {
+    const modal = Modals.createBaseModal("edit music settings")
+    Modals.addModalDescription(modal, musicItem.title)
+
+    const container = document.createElement("div")
+    container.classList.add("gui_container")
+    modal.appendChild(container)
+
+    const doneButton = document.createElement("div")
+    doneButton.classList.add("gui_music_button")
+    doneButton.textContent = "Done"
+    container.appendChild(doneButton)
+
+    return new Promise((resolve) => {
+        doneButton.addEventListener("click", () => {
+            Modals.closeModal()
+            resolve()
+        })
+
+        Modals.openModalWindow(modal)
+    });
 }
 
 function deleteMusic(musicItem) {
@@ -131,8 +158,8 @@ export function init() {
 export function setupCanvas(canvas) {
     const callback = (event) => {
         let pos = (event.offsetX / canvas.clientWidth) - 0.5;
-        if (pos < -0.5) pos = -0.5;
-        if (pos > 0.5) pos = 0.5;
+        if (pos < -0.5) { pos = -0.5; }
+        else if (pos > 0.5) { pos = 0.5; }
         Game.setPos(pos);
     };
 

@@ -81,7 +81,7 @@ export function createBaseModal(title) {
     return modal
 }
 
-function addModalDescription(modal, description) {
+export function addModalDescription(modal, description) {
     const descriptionObj = document.createElement("div")
     descriptionObj.classList.add("menu-description")
     descriptionObj.textContent = description
