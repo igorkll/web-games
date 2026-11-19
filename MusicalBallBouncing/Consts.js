@@ -13,6 +13,7 @@ export const JUMP_FORCE = 10;
 export const GROUND_Y = 0;
 export const GAMEOVER_Y = -8;
 export const PLATFORM_DELETE_POSITION = 8;
+export const BALL_DIAMETER_MUL_CHECK = 0.4;
 
 export const HOR_VIEW_SIZE = 6;
 export const LONG_PLATFORM_SIZE = 9;

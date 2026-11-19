@@ -194,8 +194,12 @@ function checkPlatformCollision(platform) {
     //if (dx > platform_width / 2 + ballRadius) return false;
     //if (dz > platform_width / 2 + ballRadius) return false;
 
-    if (dx > platform_width / 2) return false;
-    if (dz > platform_width / 2) return false;
+    //if (dx > platform_width / 2) return false;
+    //if (dz > platform_width / 2) return false;
+
+    let checkAdd = (Consts.SPHERE_DIAMETER * Consts.BALL_DIAMETER_MUL_CHECK) / 2
+    if (dx > platform_width / 2 + checkAdd) return false;
+    if (dz > platform_width / 2 + checkAdd) return false;
 
     return true;
 }
