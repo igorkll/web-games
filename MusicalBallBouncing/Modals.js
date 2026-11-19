@@ -88,9 +88,10 @@ export function addModalDescription(modal, description) {
     modal.appendChild(descriptionObj);
 }
 
-export function addContainer(modal) {
+export function addContainer(modal, flex=true) {
     const obj = document.createElement("div");
     obj.classList.add("gui_container");
+    if (flex) obj.classList.add("gui_container_flex");
     modal.appendChild(obj);
     return obj;
 }
@@ -111,8 +112,26 @@ export function addButton(container, text) {
     return obj;
 }
 
-export function addSeekBar(container, ) {
+export function addSeekBar(container, defaultValue, changeCallback, saveCallback, minVal=0, maxVal=1, step=0.01) {
+    const seekbar = document.createElement("input");
 
+    seekbar.type = "range";
+    seekbar.min = minVal;
+    seekbar.max = maxVal;
+    seekbar.step = step;
+    seekbar.value = defaultValue;
+
+    seekbar.addEventListener("input", () => {
+        changeCallback?.(Number(seekbar.value));
+    });
+
+    seekbar.addEventListener("change", () => {
+        saveCallback?.(Number(seekbar.value));
+    });
+
+    container.appendChild(seekbar);
+
+    return seekbar;
 }
 
 export function modalYesno(title, description=null) {
@@ -121,6 +140,7 @@ export function modalYesno(title, description=null) {
 
     const container = document.createElement("div")
     container.classList.add("gui_container")
+    container.classList.add("gui_container_flex")
     modal.appendChild(container)
 
     const noButton = document.createElement("div")

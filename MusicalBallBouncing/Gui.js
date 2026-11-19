@@ -4,6 +4,7 @@ import * as Game from './Game.js';
 import * as MusicList from './music/MusicList.js';
 import * as MusicManager from './MusicManager.js';
 import * as Main from './Main.js';
+import * as Consts from './Consts.js';
 
 const gui_base = document.getElementById("gui_base")
 const gui_music_list = document.getElementById("gui_music_list")
@@ -68,8 +69,12 @@ function editMusic(musicItem) {
     const modal = Modals.createBaseModal("edit music settings")
     Modals.addModalDescription(modal, musicItem.title)
 
-    let container = Modals.addContainer(modal);
+    let container = Modals.addContainer(modal, false);
     Modals.addSubTitle(container, "rhythm");
+    let seekbar = Modals.addSeekBar(container, musicItem.rhythm ?? 1, null, (val) => {
+        musicItem.rhythm = val;
+    }, Consts.RHYTHM_MIN, Consts.RHYTHM_MAX);
+    seekbar.style.flex = '1';
 
     container = Modals.addContainer(modal);
     const doneButton = Modals.addButton(container, "Done");

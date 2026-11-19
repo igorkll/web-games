@@ -193,7 +193,7 @@ canvas {
     gap: 8px;
 }
 
-.gui_container > * {
+.gui_container_flex > * {
     flex: 1;
     border-radius: 15px;
 }
