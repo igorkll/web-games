@@ -16,7 +16,7 @@ export const PLATFORM_DELETE_POSITION = 8;
 export const BALL_DIAMETER_MUL_CHECK = 0.4;
 
 export const HOR_VIEW_SIZE = 6;
-export const LONG_PLATFORM_SIZE = 9;
+export const LONG_PLATFORM_SIZE = 12;
 
 export const CHANGE_BACKGROUND_AFTER_TIME = 60;
 export const CHANGE_BACKGROUND_SMOOTHED_TIMER = 10;
