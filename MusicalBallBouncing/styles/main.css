@@ -4,7 +4,7 @@
 
 @font-face {
     font-family: "Sevenish";
-    src: url("./fonts/Sevenish/Sevenish.ttf") format("truetype");
+    src: url("../fonts/Sevenish/Sevenish.ttf") format("truetype");
     font-weight: normal;
     font-style: normal;
 }
