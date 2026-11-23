@@ -99,6 +99,12 @@ function editMusic(musicItem) {
 
     let forceUpdateValues = [];
 
+    let textInput = Modals.addTextInput(modal, musicItem.title, (text) => {
+        musicItem.title = text;
+        saveCallback();
+    });
+    textInput.classList.add("flex");
+
     let container = Modals.addVContainer(modal);
     Modals.addSubTitle(container, "Rhythm");
     forceUpdateValues.push(
