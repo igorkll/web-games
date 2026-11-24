@@ -11,7 +11,10 @@ function getElementsAt(x, y, all=false) {
 
 function handle_pointermove(e) {
     if (e.pointerType === "mouse") {
-        
+        getElementsAt(e.clientX, e.clientY, false).forEach(element => element.add("touch_hybrid_safe_hover-ts_active"));
+        getElementsAt(e.clientX, e.clientY, false).forEach(element => element.add("touch_hybrid_safe_hover-ts_hover"));
+        getElementsAt(e.clientX, e.clientY, true).forEach(element => element.add("touch_hybrid_safe_hover-ts_active-bubble"));
+        getElementsAt(e.clientX, e.clientY, true).forEach(element => element.add("touch_hybrid_safe_hover-ts_hover-bubble"));
     } else {
         
     }
