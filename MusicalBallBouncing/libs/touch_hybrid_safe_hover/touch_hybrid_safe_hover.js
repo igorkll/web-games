@@ -33,12 +33,14 @@ let enabled = false;
 
 export function enable() {
     if (enabled) return;
+    document.addEventListener("pointermove", handle_pointermove);
     document.addEventListener("pointerup", handle_pointerup);
     enabled = true;
 }
 
 export function disable() {
     if (!enabled) return;
+    document.removeEventListener("pointermove", handle_pointermove);
     document.removeEventListener("pointerup", handle_pointerup);
     enabled = false;
 }
