@@ -9,12 +9,29 @@ function getElementsAt(x, y, all=false) {
     return all ? elements : elements.slice(0, 1);
 }
 
+function handle_pointerdown(e) {
+    removeClassFromAllElements("touch_hybrid_safe_hover-ts_active");
+    removeClassFromAllElements("touch_hybrid_safe_hover-ts_hover");
+    removeClassFromAllElements("touch_hybrid_safe_hover-ts_active-bubble");
+    removeClassFromAllElements("touch_hybrid_safe_hover-ts_hover-bubble");
+    
+    getElementsAt(e.clientX, e.clientY, false).forEach(element => element.classList.add("touch_hybrid_safe_hover-ts_active"));
+    getElementsAt(e.clientX, e.clientY, false).forEach(element => element.classList.add("touch_hybrid_safe_hover-ts_hover"));
+    getElementsAt(e.clientX, e.clientY, true).forEach(element => element.classList.add("touch_hybrid_safe_hover-ts_active-bubble"));
+    getElementsAt(e.clientX, e.clientY, true).forEach(element => element.classList.add("touch_hybrid_safe_hover-ts_hover-bubble"));
+}
+
 function handle_pointermove(e) {
+    removeClassFromAllElements("touch_hybrid_safe_hover-ts_active");
+    removeClassFromAllElements("touch_hybrid_safe_hover-ts_hover");
+    removeClassFromAllElements("touch_hybrid_safe_hover-ts_active-bubble");
+    removeClassFromAllElements("touch_hybrid_safe_hover-ts_hover-bubble");
+    
     if (e.pointerType === "mouse") {
-        getElementsAt(e.clientX, e.clientY, false).forEach(element => element.add("touch_hybrid_safe_hover-ts_active"));
-        getElementsAt(e.clientX, e.clientY, false).forEach(element => element.add("touch_hybrid_safe_hover-ts_hover"));
-        getElementsAt(e.clientX, e.clientY, true).forEach(element => element.add("touch_hybrid_safe_hover-ts_active-bubble"));
-        getElementsAt(e.clientX, e.clientY, true).forEach(element => element.add("touch_hybrid_safe_hover-ts_hover-bubble"));
+        getElementsAt(e.clientX, e.clientY, false).forEach(element => element.classList.add("touch_hybrid_safe_hover-ts_active"));
+        getElementsAt(e.clientX, e.clientY, false).forEach(element => element.classList.add("touch_hybrid_safe_hover-ts_hover"));
+        getElementsAt(e.clientX, e.clientY, true).forEach(element => element.classList.add("touch_hybrid_safe_hover-ts_active-bubble"));
+        getElementsAt(e.clientX, e.clientY, true).forEach(element => element.classList.add("touch_hybrid_safe_hover-ts_hover-bubble"));
     } else {
         
     }
@@ -33,6 +50,7 @@ let enabled = false;
 
 export function enable() {
     if (enabled) return;
+    document.addEventListener("pointerdown", handle_pointerdown);
     document.addEventListener("pointermove", handle_pointermove);
     document.addEventListener("pointerup", handle_pointerup);
     enabled = true;
@@ -40,6 +58,7 @@ export function enable() {
 
 export function disable() {
     if (!enabled) return;
+    document.removeEventListener("pointerdown", handle_pointerdown);
     document.removeEventListener("pointermove", handle_pointermove);
     document.removeEventListener("pointerup", handle_pointerup);
     enabled = false;
