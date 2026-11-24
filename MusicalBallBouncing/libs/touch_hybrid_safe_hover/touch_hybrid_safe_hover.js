@@ -4,10 +4,25 @@ function removeClassFromAllElements(className) {
     });
 }
 
+function getElementsAt(x, y, all=false) {
+    const elements = document.elementsFromPoint(x, y);
+    return all ? elements : elements.slice(0, 1);
+}
+
+function handle_pointermove(e) {
+    if (e.pointerType === "mouse") {
+        
+    } else {
+        
+    }
+}
+
 function handle_pointerup(e) {
     if (e.pointerType !== "mouse") {
         removeClassFromAllElements("touch_hybrid_safe_hover-ts_active");
         removeClassFromAllElements("touch_hybrid_safe_hover-ts_hover");
+        removeClassFromAllElements("touch_hybrid_safe_hover-ts_active-bubble");
+        removeClassFromAllElements("touch_hybrid_safe_hover-ts_hover-bubble");
     }
 }
 
