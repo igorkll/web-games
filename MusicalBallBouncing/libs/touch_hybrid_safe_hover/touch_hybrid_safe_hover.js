@@ -10,7 +10,6 @@ function getElementsAt(x, y, all=false) {
 }
 
 function handle_pointerdown(e) {
-    console.log("handle_pointerdown");
     removeClassFromAllElements("touch_hybrid_safe_hover-ts_active");
     removeClassFromAllElements("touch_hybrid_safe_hover-ts_hover");
     removeClassFromAllElements("touch_hybrid_safe_hover-ts_active-bubble");
@@ -23,13 +22,13 @@ function handle_pointerdown(e) {
 }
 
 function handle_pointermove(e) {
-    console.log("handle_pointermove");
-    removeClassFromAllElements("touch_hybrid_safe_hover-ts_active");
     removeClassFromAllElements("touch_hybrid_safe_hover-ts_hover");
-    removeClassFromAllElements("touch_hybrid_safe_hover-ts_active-bubble");
     removeClassFromAllElements("touch_hybrid_safe_hover-ts_hover-bubble");
     
     if (e.pointerType === "mouse") {
+        removeClassFromAllElements("touch_hybrid_safe_hover-ts_active");
+        removeClassFromAllElements("touch_hybrid_safe_hover-ts_active-bubble");
+
         getElementsAt(e.clientX, e.clientY, false).forEach(element => element.classList.add("touch_hybrid_safe_hover-ts_active"));
         getElementsAt(e.clientX, e.clientY, false).forEach(element => element.classList.add("touch_hybrid_safe_hover-ts_hover"));
         getElementsAt(e.clientX, e.clientY, true).forEach(element => element.classList.add("touch_hybrid_safe_hover-ts_active-bubble"));
@@ -38,25 +37,26 @@ function handle_pointermove(e) {
         getElementsAt(e.clientX, e.clientY, false).forEach(element => element.classList.add("touch_hybrid_safe_hover-ts_hover"));
         getElementsAt(e.clientX, e.clientY, true).forEach(element => element.classList.add("touch_hybrid_safe_hover-ts_hover-bubble"));
 
-        if (false) {
-            getElementsAt(e.clientX, e.clientY, false).forEach(element => element.classList.add("touch_hybrid_safe_hover-ts_active"));
-            getElementsAt(e.clientX, e.clientY, true).forEach(element => element.classList.add("touch_hybrid_safe_hover-ts_active-bubble"));
-        }
+        let ts_active_list = [];
+        let ts_active_bubble_list = [];
+        getElementsAt(e.clientX, e.clientY, false).forEach(element => ts_active_list.push(element));
+        getElementsAt(e.clientX, e.clientY, true).forEach(element => ts_active_bubble_list.push(element));
+
+        document.querySelectorAll(".touch_hybrid_safe_hover-ts_active").forEach(element => {
+            if (!ts_active_list.includes(element)) {
+                element.classList.remove("touch_hybrid_safe_hover-ts_active");
+            }
+        });
+
+        document.querySelectorAll(".touch_hybrid_safe_hover-ts_active-bubble").forEach(element => {
+            if (!ts_active_bubble_list.includes(element)) {
+                element.classList.remove("touch_hybrid_safe_hover-ts_active-bubble");
+            }
+        });
     }
 }
 
-function handle_pointerup(e) {
-    console.log("handle_pointerup");
-    if (e.pointerType !== "mouse") {
-        removeClassFromAllElements("touch_hybrid_safe_hover-ts_active");
-        removeClassFromAllElements("touch_hybrid_safe_hover-ts_hover");
-        removeClassFromAllElements("touch_hybrid_safe_hover-ts_active-bubble");
-        removeClassFromAllElements("touch_hybrid_safe_hover-ts_hover-bubble");
-    }
-}
-
-function handle_pointercancel(e) {
-    console.log("handle_pointercancel");
+function handle_pointerup_pointercancel(e) {
     if (e.pointerType !== "mouse") {
         removeClassFromAllElements("touch_hybrid_safe_hover-ts_active");
         removeClassFromAllElements("touch_hybrid_safe_hover-ts_hover");
@@ -71,8 +71,8 @@ export function enable() {
     if (enabled) return;
     document.addEventListener("pointerdown", handle_pointerdown);
     document.addEventListener("pointermove", handle_pointermove);
-    document.addEventListener("pointerup", handle_pointerup);
-    document.addEventListener("pointercancel", handle_pointercancel);
+    document.addEventListener("pointerup", handle_pointerup_pointercancel);
+    document.addEventListener("pointercancel", handle_pointerup_pointercancel);
     enabled = true;
 }
 
@@ -80,8 +80,8 @@ export function disable() {
     if (!enabled) return;
     document.removeEventListener("pointerdown", handle_pointerdown);
     document.removeEventListener("pointermove", handle_pointermove);
-    document.removeEventListener("pointerup", handle_pointerup);
-    document.removeEventListener("pointercancel", handle_pointercancel);
+    document.removeEventListener("pointerup", handle_pointerup_pointercancel);
+    document.removeEventListener("pointercancel", handle_pointerup_pointercancel);
     enabled = false;
 }
 
