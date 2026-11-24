@@ -10,6 +10,7 @@ function getElementsAt(x, y, all=false) {
 }
 
 function handle_pointerdown(e) {
+    console.log("handle_pointerdown");
     removeClassFromAllElements("touch_hybrid_safe_hover-ts_active");
     removeClassFromAllElements("touch_hybrid_safe_hover-ts_hover");
     removeClassFromAllElements("touch_hybrid_safe_hover-ts_active-bubble");
@@ -22,6 +23,7 @@ function handle_pointerdown(e) {
 }
 
 function handle_pointermove(e) {
+    console.log("handle_pointermove");
     removeClassFromAllElements("touch_hybrid_safe_hover-ts_active");
     removeClassFromAllElements("touch_hybrid_safe_hover-ts_hover");
     removeClassFromAllElements("touch_hybrid_safe_hover-ts_active-bubble");
@@ -33,11 +35,28 @@ function handle_pointermove(e) {
         getElementsAt(e.clientX, e.clientY, true).forEach(element => element.classList.add("touch_hybrid_safe_hover-ts_active-bubble"));
         getElementsAt(e.clientX, e.clientY, true).forEach(element => element.classList.add("touch_hybrid_safe_hover-ts_hover-bubble"));
     } else {
-        
+        getElementsAt(e.clientX, e.clientY, false).forEach(element => element.classList.add("touch_hybrid_safe_hover-ts_hover"));
+        getElementsAt(e.clientX, e.clientY, true).forEach(element => element.classList.add("touch_hybrid_safe_hover-ts_hover-bubble"));
+
+        if (false) {
+            getElementsAt(e.clientX, e.clientY, false).forEach(element => element.classList.add("touch_hybrid_safe_hover-ts_active"));
+            getElementsAt(e.clientX, e.clientY, true).forEach(element => element.classList.add("touch_hybrid_safe_hover-ts_active-bubble"));
+        }
     }
 }
 
 function handle_pointerup(e) {
+    console.log("handle_pointerup");
+    if (e.pointerType !== "mouse") {
+        removeClassFromAllElements("touch_hybrid_safe_hover-ts_active");
+        removeClassFromAllElements("touch_hybrid_safe_hover-ts_hover");
+        removeClassFromAllElements("touch_hybrid_safe_hover-ts_active-bubble");
+        removeClassFromAllElements("touch_hybrid_safe_hover-ts_hover-bubble");
+    }
+}
+
+function handle_pointercancel(e) {
+    console.log("handle_pointercancel");
     if (e.pointerType !== "mouse") {
         removeClassFromAllElements("touch_hybrid_safe_hover-ts_active");
         removeClassFromAllElements("touch_hybrid_safe_hover-ts_hover");
@@ -53,6 +72,7 @@ export function enable() {
     document.addEventListener("pointerdown", handle_pointerdown);
     document.addEventListener("pointermove", handle_pointermove);
     document.addEventListener("pointerup", handle_pointerup);
+    document.addEventListener("pointercancel", handle_pointercancel);
     enabled = true;
 }
 
@@ -61,6 +81,7 @@ export function disable() {
     document.removeEventListener("pointerdown", handle_pointerdown);
     document.removeEventListener("pointermove", handle_pointermove);
     document.removeEventListener("pointerup", handle_pointerup);
+    document.removeEventListener("pointercancel", handle_pointercancel);
     enabled = false;
 }
 

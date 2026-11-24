@@ -1,3 +1,11 @@
+* {
+    touch-action: none;
+}
+
+body {
+    overflow: hidden;
+}
+
 .row {
     display: flex;
     flex-direction: row;
