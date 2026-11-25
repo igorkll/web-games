@@ -18,9 +18,6 @@ function update() {
     removeClassFromAllElements("touch_hybrid_safe_hover-ts_hover");
     removeClassFromAllElements("touch_hybrid_safe_hover-ts_hover-bubble");
 
-    removeClassFromAllElements("touch_hybrid_safe_hover-ts_active");
-    removeClassFromAllElements("touch_hybrid_safe_hover-ts_active-bubble");
-
     removeClassFromAllElements("touch_hybrid_safe_hover-ts_none");
     removeClassFromAllElements("touch_hybrid_safe_hover-ts_none-bubble");
 
