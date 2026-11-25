@@ -71,6 +71,35 @@ body {
     background-color: #00FF00;
 }
 
+/* ------------------------------------ touch_hybrid_safe_hover-ts_none */
+
+.example-ts_none {
+    border: solid;
+
+    width: 100px;
+    height: 100px;
+
+    background-color: #880088;
+
+    position: relative;
+}
+
+.example-ts_none > * {
+    position: absolute;
+
+    width: 50px;
+    height: 50px;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+}
+
+.example-ts_none.touch_hybrid_safe_hover-ts_none {
+    background-color: #FF00FF;
+}
+
 /* ------------------------------------ touch_hybrid_safe_hover-ts_active-bubble */
 
 .example-ts_active-bubble {
@@ -127,35 +156,6 @@ body {
 
 .example-ts_hover-bubble.touch_hybrid_safe_hover-ts_hover-bubble {
     background-color: #00FFFF;
-}
-
-/* ------------------------------------ touch_hybrid_safe_hover-ts_none */
-
-.example-ts_none {
-    border: solid;
-
-    width: 100px;
-    height: 100px;
-
-    background-color: #880088;
-
-    position: relative;
-}
-
-.example-ts_none > * {
-    position: absolute;
-
-    width: 50px;
-    height: 50px;
-
-    top: 50%;
-    left: 50%;
-
-    transform: translate(-50%, -50%);
-}
-
-.example-ts_none.touch_hybrid_safe_hover-ts_none {
-    background-color: #FF00FF;
 }
 
 /* ------------------------------------ touch_hybrid_safe_hover-ts_none-bubble */
