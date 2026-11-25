@@ -132,6 +132,11 @@ canvas {
     flex-shrink: 0;
 
     text-shadow: 0px 0px 3px black;
+    transition: box-shadow 0.2s ease;
+}
+
+.gui_music_item.touch_hybrid_safe_hover-ts_active {
+    box-shadow: 0px 0px 15px #ffffff;
 }
 
 input[type="text"] {
@@ -202,6 +207,11 @@ input[type="text"] {
     margin-left: 8px;
     flex-shrink: 0;
 
+    transition: box-shadow 0.2s ease;
+}
+
+.gui_music_item_button.touch_hybrid_safe_hover-ts_active {
+    box-shadow: 0px 0px 15px #ffffff;
 }
 
 .gui_music_item_text {
@@ -233,6 +243,11 @@ input[type="text"] {
     font-size: 25px;
 
     border-radius: 15px;
+    transition: box-shadow 0.2s ease;
+}
+
+.gui_music_button.touch_hybrid_safe_hover-ts_active {
+    box-shadow: 0px 0px 15px #ffffff;
 }
 
 .gui_container {

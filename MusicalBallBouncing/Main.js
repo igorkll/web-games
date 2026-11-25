@@ -3,7 +3,7 @@ import * as Game from './Game.js';
 import * as Consts from './Consts.js';
 import * as Gui from './Gui.js';
 
-import * as touch_hybrid_safe_hover from './touch_hybrid_safe_hover/touch_hybrid_safe_hover.js';
+import * as touch_hybrid_safe_hover from './libs/touch_hybrid_safe_hover/touch_hybrid_safe_hover.js';
 touch_hybrid_safe_hover.enable();
 
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';

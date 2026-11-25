@@ -31,7 +31,7 @@ function removeClassFromAllElements(className) {
 }
 
 function getElementsAt(x, y, all=false) {
-    const elements = document.elementsFromPoint(x, y);
+    const elements = document.elementsFromPoint(x, y).filter(element => !element.classList.contains("touch_hybrid_safe_hover-ignore"));
     return all ? elements : elements.slice(0, 1);
 }
 

@@ -195,13 +195,14 @@ function addMusicToList(musicItem, editable=false) {
 
     const textItem = document.createElement("div");
     textItem.classList.add("gui_music_item_text");
+    textItem.classList.add("touch_hybrid_safe_hover-ignore");
     textItem.textContent = musicItem.title;
     item.appendChild(textItem);
 
     if (editable) {
         let itemButton = document.createElement("div");
         itemButton.classList.add("gui_music_item_button");
-        itemButton.innerHTML = "<img class=\"button-img\" src=\"textures/rename.png\"></img>";
+        itemButton.innerHTML = "<img class=\"button-img touch_hybrid_safe_hover-ignore\" src=\"textures/rename.png\"></img>";
         itemButton.addEventListener("click", (e) => {
             e.stopPropagation();
             editMusic(musicItem);
@@ -210,7 +211,7 @@ function addMusicToList(musicItem, editable=false) {
 
         itemButton = document.createElement("div");
         itemButton.classList.add("gui_music_item_button");
-        itemButton.innerHTML = "<img class=\"button-img\" src=\"textures/delete.png\"></img>";
+        itemButton.innerHTML = "<img class=\"button-img touch_hybrid_safe_hover-ignore\" src=\"textures/delete.png\"></img>";
         itemButton.addEventListener("click", (e) => {
             e.stopPropagation();
             deleteMusic(musicItem);
