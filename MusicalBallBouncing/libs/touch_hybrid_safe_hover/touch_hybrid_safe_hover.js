@@ -76,14 +76,18 @@ function handle_pointermove(e) {
     }
 }
 
+function removeAllClasses() {
+    removeClassFromAllElements("touch_hybrid_safe_hover-ts_active");
+    removeClassFromAllElements("touch_hybrid_safe_hover-ts_hover");
+    removeClassFromAllElements("touch_hybrid_safe_hover-ts_active-bubble");
+    removeClassFromAllElements("touch_hybrid_safe_hover-ts_hover-bubble");
+    removeClassFromAllElements("touch_hybrid_safe_hover-ts_none-bubble");
+    removeClassFromAllElements("touch_hybrid_safe_hover-ts_none-bubble");
+}
+
 function handle_pointerup_pointercancel(e) {
     if (e.pointerType !== "mouse") {
-        removeClassFromAllElements("touch_hybrid_safe_hover-ts_active");
-        removeClassFromAllElements("touch_hybrid_safe_hover-ts_hover");
-        removeClassFromAllElements("touch_hybrid_safe_hover-ts_active-bubble");
-        removeClassFromAllElements("touch_hybrid_safe_hover-ts_hover-bubble");
-        removeClassFromAllElements("touch_hybrid_safe_hover-ts_none-bubble");
-        removeClassFromAllElements("touch_hybrid_safe_hover-ts_none-bubble");
+        removeAllClasses();
     }
 }
 
@@ -102,6 +106,7 @@ export function disable() {
     document.removeEventListener("pointermove", handle_pointermove);
     document.removeEventListener("pointerup", handle_pointerup_pointercancel);
     document.removeEventListener("pointercancel", handle_pointerup_pointercancel);
+    removeAllClasses();
     enabled = false;
 }
 

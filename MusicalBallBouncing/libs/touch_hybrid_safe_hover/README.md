@@ -14,3 +14,9 @@ touch_hybrid_safe_hover.enable();
 * "touch_hybrid_safe_hover-ts_active-bubble" - It works as the first alternative, it just pops up.
 * "touch_hybrid_safe_hover-ts_hover-bubble" - It works as the first alternative, it just pops up.
 * "touch_hybrid_safe_hover-ts_none-bubble" - It works as the first alternative, it just pops up.
+
+### functions
+* enable - activates the library
+* disable - deactivates the library
+* isEnabled - returns true if the library is activated
+* getLastInteractionType - null / "mouse" / "touch" / "pen"
